@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <include 
+    android:id="@+id/main_tool"
+    layout="@layout/topbar"
+    android:layout_width="fill_parent"
+    android:layout_height="46.33dp"
+    android:layout_alignParentTop="true"/>
+    
+    <ScrollView 
+        android:id="@+id/scroll_search_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/main_tool">
+        
+        <LinearLayout 
+            android:id="@+id/lin_search_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            
+            
+            <RelativeLayout
+                android:id="@+id/rel1"
+                android:layout_width="fill_parent"
+                android:layout_height="35.67dp"
+                android:background="#FFFFFF" >
+
+                <LinearLayout
+                    android:id="@+id/lin"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2" >
+
+                    <RelativeLayout
+                        android:id="@+id/rel_search_store"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" >
+
+                        <RelativeLayout
+                            android:id="@+id/rel_store"
+                            android:layout_width="fill_parent"
+                            android:layout_height="32.33dp" >
+
+                            <TextView
+                                android:id="@+id/txt_store"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="Stores"
+                                android:textColor="#4d4d49"
+                                android:textSize="15dp"/>
+                        </RelativeLayout>
+
+                        <View
+                            android:id="@+id/view_store"
+                            android:layout_width="fill_parent"
+                            android:layout_height="3.33dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_below="@+id/rel_store"
+                            android:background="#26B3AD" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rel_search_exp"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" >
+
+                        <RelativeLayout
+                            android:id="@+id/rel_exp"
+                            android:layout_width="fill_parent"
+                            android:layout_height="32.33dp" >
+
+                            <TextView
+                                android:id="@+id/txt_exp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="Experiences"
+                                android:textColor="#acacac"
+                                android:textSize="15dp"/>
+                        </RelativeLayout>
+
+                        <View
+                            android:id="@+id/view_exp"
+                            android:layout_width="fill_parent"
+                            android:layout_height="3.33dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_below="@+id/rel_exp"
+                            android:background="#acacac" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+            
+            
+            
+            <LinearLayout 
+                android:id="@+id/lin_search_store"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            </LinearLayout>
+            
+            <LinearLayout
+                android:id="@+id/lin_search_expe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+                
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    
+     <!-- <com.zakoopi.helper.MaterialProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="visible"
+        app:progress_stoke_width="2dp" /> -->
+
+</RelativeLayout>
