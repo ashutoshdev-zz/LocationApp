@@ -69,7 +69,7 @@ Log.e("ADD", allArea.getMarketName());
 				//allProduct.setProductCategory(cursor.getString(2));
 
 				arealist1.add(allArea);
-				Log.e("DB_AREA", ""+arealist1);
+			//	Log.e("DB_AREA", ""+arealist1);
 			} while (cursor.moveToNext());
 		}
 		return arealist1;
@@ -78,8 +78,8 @@ Log.e("ADD", allArea.getMarketName());
 	
 	
 	
-	public List<String> getAllAreas1() {
-		List<String> arealist1 = new ArrayList<String>();
+	public ArrayList<String> getAllAreas1() {
+		ArrayList<String> arealist1 = new ArrayList<String>();
 
 		String selectQuery = "SELECT area_name FROM " + TABLE_AREA;
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -90,7 +90,7 @@ Log.e("ADD", allArea.getMarketName());
 				
 				String name=cursor.getString(cursor.getColumnIndex("area_name"));
 				arealist1.add(name);
-				//Log.e("GETALL", ""+arealist1);
+				Log.e("GETALL", ""+arealist1);
 			} while (cursor.moveToNext());
 		}
 		return arealist1;

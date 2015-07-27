@@ -13,6 +13,7 @@
         android:layout_height="match_parent"
         android:cacheColorHint="@android:color/transparent"
         android:divider="@android:color/transparent"
+        android:scrollingCache="false"
         android:drawSelectorOnTop="true"
         android:visibility="visible" />
 

@@ -48,6 +48,7 @@ import com.zakoopi.fragments.HomeDiscoverFragment;
 import com.zakoopi.fragments.HomeFeedFragment;
 import com.zakoopi.fragments.HomeProfileFrag;
 import com.zakoopi.helper.CircleImageView;
+import com.zakoopi.helper.Variables;
 import com.zakoopi.search.AllArea;
 import com.zakoopi.search.Area;
 import com.zakoopi.search.SearchUpdate;
@@ -578,6 +579,8 @@ public class MainActivity extends FragmentActivity implements
 			// Log.e("ADDALL", ""+home_search_area_db);
 
 		}
+		Variables.areaList.clear();
+		Variables.areaList = home_search_area_db.getAllAreas1();
 		// Log.e("ADDALL", ""+home_search_area_db);
 		/*
 		 * areaList = home_search_area_db.getAllAreas1();
@@ -617,7 +620,7 @@ public class MainActivity extends FragmentActivity implements
 				pager.setAdapter(null);
 				pager.setAdapter(pagerAdapter);
 				pager.setCurrentItem(fragment_pos);
-				all_area_city();
+				//all_area_city();
 			}
 
 			@Override
@@ -638,7 +641,7 @@ public class MainActivity extends FragmentActivity implements
 	 * {@code} all_area()
 	 * 
 	 * @return void
-	 */
+	 *//*
 	public void all_area_city() {
 		ALL_AREA_REST_URL = getString(R.string.base_url) + "markets.json";
 
@@ -683,11 +686,11 @@ public class MainActivity extends FragmentActivity implements
 		});
 	}
 
-	/**
+	*//**
 	 * 
 	 * @allArea_showData data1
 	 * @return void
-	 */
+	 *//*
 	public void allArea_showData_city(String data1) {
 
 		markets.clear();
@@ -703,16 +706,18 @@ public class MainActivity extends FragmentActivity implements
 		for (int i = 0; i < markets.size(); i++) {
 			market_name = markets.get(i).get_market_name();
 			home_search_area_db.addAllArea(new AllArea(market_name));
-		//	 Log.e("ADDALL", ""+home_search_area_db);
+			 Log.e("ADDALL", ""+home_search_area_db);
 
 		}
+		Variables.areaList.clear();
+		Variables.areaList = home_search_area_db.getAllAreas1();
 		// Log.e("ADDALL", ""+home_search_area_db);
-		/*
+		
 		 * areaList = home_search_area_db.getAllAreas1();
 		 * 
 		 * ArrayAdapter<String> adp = new ArrayAdapter<String>(getActivity(),
 		 * R.layout.home_search_spinner_item, R.id.txt_product, areaList);
 		 * search_spinner_area.setAdapter(adp);
-		 */
-	}
+		 
+	}*/
 }

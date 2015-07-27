@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.zakoopi.search.AllProduct;
 
@@ -49,7 +50,6 @@ public class HomeSearchAllProductDatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_PRODUCT_NAME, allProduct.getProductName());
 		values.put(KEY_PRODUCT_CATEGORY, allProduct.getProductCategory());
 		db.insert(TABLE_PRODUCT, null, values);
-
 		// db.close();
 	}
 

@@ -40,6 +40,7 @@ import com.google.gson.stream.JsonReader;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.zakoopi.R;
+import com.zakoopi.database.HomeFeedLikeDatabaseHandler;
 import com.zakoopi.endlist.EndlessListView;
 import com.zakoopi.helper.MaterialProgressBar;
 import com.zakoopi.helper.POJO;
@@ -55,25 +56,28 @@ import com.zakoopi.homefeed.Popular_StoreReview_Store;
 import com.zakoopi.homefeed.Popular_StoreReview_Users;
 import com.zakoopi.homefeed.Popular_Teamsdata;
 import com.zakoopi.homefeed.popularfeed;
+import com.zakoopi.search.AllArea;
 import com.zakoopi.utils.ClientHttp;
 import com.zakoopi.utils.PopularAdapter;
+import com.zakoopi.utils.PopularAdapter1;
 
 @SuppressWarnings("deprecation")
 public class PopularFeedFragment extends Fragment {
 
-	private PopularAdapter adapter;
+	private PopularAdapter1 adapter;
 	private EndlessListView endlessListView;
 	private boolean mHaveMoreDataToLoad;
 	// private static final String POPULAR_REST_URL =
 	// "http://v3.zakoopi.com/api/feedPopular.json?page=";
 	private static String POPULAR_REST_URL = " ";
-	AsyncHttpClient client =  ClientHttp.getInstance();
+	AsyncHttpClient client = ClientHttp.getInstance();
 	final static int DEFAULT_TIMEOUT = 40 * 1000;
 	String text = "";
 	String line = "";
 	int page = 1;
 	private SharedPreferences pro_user_pref;
-	String pro_user_pic_url, pro_user_name, pro_user_location, user_email, user_password;
+	String pro_user_pic_url, pro_user_name, pro_user_location, user_email,
+			user_password;
 	Fragment popularFrag, recentFrag;
 	LinearLayout popular_linear, recent_linear;
 	View include_view;
@@ -85,7 +89,7 @@ public class PopularFeedFragment extends Fragment {
 	View view_popular, view_recent, view_popular1, view_recent1;
 	View header_view;
 	Dialog diaog;
-	
+	HomeFeedLikeDatabaseHandler likeDatabaseHandler;
 
 	ArrayList<Integer> colorlist = null;
 	Integer[] colors = { R.color.brown, R.color.purple, R.color.bgreen,
@@ -107,6 +111,7 @@ public class PopularFeedFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.popular_feed_home, null);
 
+		likeDatabaseHandler = new HomeFeedLikeDatabaseHandler(getActivity());
 		/**
 		 * User Login SharedPreferences
 		 */
@@ -117,7 +122,7 @@ public class PopularFeedFragment extends Fragment {
 		pro_user_location = pro_user_pref.getString("user_location", "4267");
 		user_email = pro_user_pref.getString("user_email", "9089");
 		user_password = pro_user_pref.getString("password", "sar");
-		
+
 		loadDialog();
 		typeface_semibold = Typeface.createFromAsset(getActivity().getAssets(),
 				"fonts/SourceSansPro-Semibold.ttf");
@@ -130,8 +135,6 @@ public class PopularFeedFragment extends Fragment {
 		recent_linear = (LinearLayout) include_view
 				.findViewById(R.id.lin_recent);
 
-		
-       
 		POPULAR_REST_URL = getString(R.string.base_url)
 				+ "feedFeatured.json?page=";
 
@@ -167,7 +170,7 @@ public class PopularFeedFragment extends Fragment {
 
 	@Override
 	public void onResume() {
-		
+
 		super.onResume();
 		// Toast.makeText(getActivity(), "OnResume", Toast.LENGTH_SHORT).show();
 	}
@@ -235,57 +238,58 @@ public class PopularFeedFragment extends Fragment {
 	 * @popular_feed page
 	 */
 	public void popular_feed(int page) {
-		 long time=System.currentTimeMillis();
-			Log.e("url", POPULAR_REST_URL + page+"&_="+time);
+		long time = System.currentTimeMillis();
+		Log.e("url", POPULAR_REST_URL + page + "&_=" + time);
 		client.setBasicAuth(user_email, user_password);
 		client.getHttpClient().getParams()
 				.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
-		client.get(POPULAR_REST_URL+page+"&_="+time, new AsyncHttpResponseHandler() {
+		client.get(POPULAR_REST_URL + page + "&_=" + time,
+				new AsyncHttpResponseHandler() {
 
-			@Override
-			public void onStart() {
-				// called before request is started
+					@Override
+					public void onStart() {
+						// called before request is started
 
-				// bar.setVisibility(View.VISIBLE);
-				endlessListView.setVisibility(View.GONE);
-			}
-
-			@Override
-			public void onSuccess(int statusCode, Header[] headers,
-					byte[] response) {
-				// called when response HTTP status is "200 OK"
-
-				try {
-
-					BufferedReader br = new BufferedReader(
-							new InputStreamReader(new ByteArrayInputStream(
-									response)));
-					while ((line = br.readLine()) != null) {
-
-						text = text + line;
+						// bar.setVisibility(View.VISIBLE);
+						endlessListView.setVisibility(View.GONE);
 					}
 
-					showData(text);
-					 Log.e("Success", "-----"+text);
-				} catch (Exception e) {
+					@Override
+					public void onSuccess(int statusCode, Header[] headers,
+							byte[] response) {
+						// called when response HTTP status is "200 OK"
 
-					e.printStackTrace();
-				}
-			}
+						try {
 
-			@Override
-			public void onFailure(int statusCode, Header[] headers,
-					byte[] errorResponse, Throwable e) {
-				 Log.e("FAIL", ""+e.getMessage());
-				endlessListView.loadMoreCompleat();
-				diaog.dismiss();
-			}
+							BufferedReader br = new BufferedReader(
+									new InputStreamReader(
+											new ByteArrayInputStream(response)));
+							while ((line = br.readLine()) != null) {
 
-			@Override
-			public void onRetry(int retryNo) {
-				// called when request is retried
-			}
-		});
+								text = text + line;
+							}
+
+							showData(text);
+							Log.e("Success", "-----" + text);
+						} catch (Exception e) {
+
+							e.printStackTrace();
+						}
+					}
+
+					@Override
+					public void onFailure(int statusCode, Header[] headers,
+							byte[] errorResponse, Throwable e) {
+						Log.e("FAIL", "" + e.getMessage());
+						endlessListView.loadMoreCompleat();
+						diaog.dismiss();
+					}
+
+					@Override
+					public void onRetry(int retryNo) {
+						// called when request is retried
+					}
+				});
 
 	}
 
@@ -293,77 +297,83 @@ public class PopularFeedFragment extends Fragment {
 	 * @popular_loadmoreFeed page
 	 */
 	public void popular_loadmoreFeed(int page) {
-		 long time=System.currentTimeMillis();
-		Log.e("url", POPULAR_REST_URL + page+"&_="+time);
-		
+		long time = System.currentTimeMillis();
+		Log.e("url", POPULAR_REST_URL + page + "&_=" + time);
+
 		client.setBasicAuth(user_email, user_password);
 
-//		Log.e("ClientLoc", getString(R.string.base_url) +"start/setClientLocation/Delhi.json?_="+time);
-//		client.get(getString(R.string.base_url) +"start/setClientLocation/Delhi.json?_="+time, new AsyncHttpResponseHandler() {
-//
-//			@Override
-//			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
-//					Throwable arg3) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//
-//			@Override
-//			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//			
-//		});
+		// Log.e("ClientLoc", getString(R.string.base_url)
+		// +"start/setClientLocation/Delhi.json?_="+time);
+		// client.get(getString(R.string.base_url)
+		// +"start/setClientLocation/Delhi.json?_="+time, new
+		// AsyncHttpResponseHandler() {
+		//
+		// @Override
+		// public void onFailure(int arg0, Header[] arg1, byte[] arg2,
+		// Throwable arg3) {
+		// // TODO Auto-generated method stub
+		//
+		// }
+		//
+		// @Override
+		// public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+		// // TODO Auto-generated method stub
+		//
+		// }
+		//
+		// });
 		client.getHttpClient().getParams()
 				.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
-		client.get(POPULAR_REST_URL + page+"&_="+time, new AsyncHttpResponseHandler() {
+		client.get(POPULAR_REST_URL + page + "&_=" + time,
+				new AsyncHttpResponseHandler() {
 
-			@Override
-			public void onStart() {
-				// called before request is started
-			}
-
-			@Override
-			public void onSuccess(int statusCode, Header[] headers,
-					byte[] response) {
-				// called when response HTTP status is "200 OK"
-
-				try {
-
-					BufferedReader br = new BufferedReader(
-							new InputStreamReader(new ByteArrayInputStream(
-									response)));
-					String st = "";
-					String st1 = "";
-					while ((st = br.readLine()) != null) {
-
-						st1 = st1 + st;
-
+					@Override
+					public void onStart() {
+						// called before request is started
 					}
 
-					showmoreData(st1);
-					Log.e("jjjjj", st1);
+					@Override
+					public void onSuccess(int statusCode, Header[] headers,
+							byte[] response) {
+						// called when response HTTP status is "200 OK"
 
-				} catch (Exception e) {
+						try {
 
-					e.printStackTrace();
-				}
-			}
+							BufferedReader br = new BufferedReader(
+									new InputStreamReader(
+											new ByteArrayInputStream(response)));
+							String st = "";
+							String st1 = "";
+							while ((st = br.readLine()) != null) {
 
-			@Override
-			public void onFailure(int statusCode, Header[] headers,
-					byte[] errorResponse, Throwable e) {
-				// called when response HTTP status is "4XX" (eg. 401, 403, 404)
-				Log.e("ggggg",e.getMessage()+"vvvvvv   "+statusCode);
-				endlessListView.loadMoreCompleat();
-			}
+								st1 = st1 + st;
 
-			@Override
-			public void onRetry(int retryNo) {
-				// called when request is retried
-			}
-		});
+							}
+
+							showmoreData(st1);
+							Log.e("jjjjj", st1);
+
+						} catch (Exception e) {
+
+							e.printStackTrace();
+						}
+					}
+
+					@Override
+					public void onFailure(int statusCode, Header[] headers,
+							byte[] errorResponse, Throwable e) {
+						// called when response HTTP status is "4XX" (eg. 401,
+						// 403, 404)
+						Log.e("ggggg", e.getMessage() + "vvvvvv   "
+								+ statusCode);
+						endlessListView.loadMoreCompleat();
+					}
+
+					@Override
+					public void onRetry(int retryNo) {
+						// called when request is retried
+					}
+				});
 
 	}
 
@@ -409,7 +419,7 @@ public class PopularFeedFragment extends Fragment {
 
 		@Override
 		protected void onPreExecute() {
-			
+
 			super.onPreExecute();
 
 		}
@@ -447,7 +457,8 @@ public class PopularFeedFragment extends Fragment {
 								String lookimg = ccll.getLarge_img();
 								String img1 = ccll1.getMedium_img();
 								String img2 = ccll2.getMedium_img();
-								String username = user.getFirst_name() +" "+ user.getLast_name();
+								String username = user.getFirst_name() + " "
+										+ user.getLast_name();
 								String userimg = user.getAndroid_api_img();
 
 								String likes = look.getLookbooklike_count();
@@ -460,9 +471,9 @@ public class PopularFeedFragment extends Fragment {
 										userimg, lookimg, img1, img2, likes,
 										hits, title, "na", "na", "na", "na",
 										String.valueOf(cards.size()), idd,
-										description, "na",
-										is_liked);
+										description, "na", is_liked);
 								pojolist.add(pp);
+
 								int rnd = new Random().nextInt(colors.length);
 								colorlist.add(colors[rnd]);
 							} else if (cards.size() == 2) {
@@ -473,7 +484,8 @@ public class PopularFeedFragment extends Fragment {
 								String lookimg = ccll.getLarge_img();
 								String img1 = ccll1.getMedium_img();
 
-								String username = user.getFirst_name() +" "+ user.getLast_name();
+								String username = user.getFirst_name() + " "
+										+ user.getLast_name();
 								String userimg = user.getAndroid_api_img();
 
 								String likes = look.getLookbooklike_count();
@@ -481,13 +493,12 @@ public class PopularFeedFragment extends Fragment {
 								String title = look.getTitle();
 								String description = ccll.getDescription();
 								String idd = look.getId();
-								//String is_liked = "na";
+								// String is_liked = "na";
 								POJO pp = new POJO("Lookbooks", username,
 										userimg, lookimg, img1, "na", likes,
 										hits, title, "na", "na", "na", "na",
 										String.valueOf(cards.size()), idd,
-										description, "na",
-										"na");
+										description, "na", "na");
 								pojolist.add(pp);
 								int rnd = new Random().nextInt(colors.length);
 								colorlist.add(colors[rnd]);
@@ -497,7 +508,8 @@ public class PopularFeedFragment extends Fragment {
 
 								String lookimg = ccll.getLarge_img();
 
-								String username = user.getFirst_name() +" "+ user.getLast_name();
+								String username = user.getFirst_name() + " "
+										+ user.getLast_name();
 								String userimg = user.getAndroid_api_img();
 
 								String likes = look.getLookbooklike_count();
@@ -505,20 +517,19 @@ public class PopularFeedFragment extends Fragment {
 								String title = look.getTitle();
 								String description = ccll.getDescription();
 								String idd = look.getId();
-							//	String is_liked = "na";
+								// String is_liked = "na";
 
 								POJO pp = new POJO("Lookbooks", username,
 										userimg, lookimg, "na", "na", likes,
 										hits, title, "na", "na", "na", "na",
 										String.valueOf(cards.size()), idd,
-										description, "na",
-										"na");
+										description, "na", "na");
 								pojolist.add(pp);
 								int rnd = new Random().nextInt(colors.length);
 								colorlist.add(colors[rnd]);
 							}
 						} catch (Exception e) {
-							
+
 						}
 
 					}
@@ -537,14 +548,15 @@ public class PopularFeedFragment extends Fragment {
 									.getArticle_images();
 
 							if (cards.size() >= 3) {
-								
+
 								Popular_Article_Images ccll = cards.get(0);
 								Popular_Article_Images ccll1 = cards.get(1);
 								Popular_Article_Images ccll2 = cards.get(2);
 								String lookimg = ccll.getLarge_img();
 								String img1 = ccll1.getMedium_img();
 								String img2 = ccll2.getMedium_img();
-								String username = user.getFirst_name() +" "+ user.getLast_name();
+								String username = user.getFirst_name() + " "
+										+ user.getLast_name();
 								String userimg = user.getAndroid_api_img();
 
 								String likes = look.getLikes_count();
@@ -558,21 +570,25 @@ public class PopularFeedFragment extends Fragment {
 										userimg, lookimg, img1, img2, likes,
 										hits, title, "na", "na", "na", "na",
 										String.valueOf(cards.size()), idd,
-										description, is_new,
-										is_liked);
+										description, is_new, is_liked);
 								pojolist.add(pp);
+likeDatabaseHandler.allDelete();
+								likeDatabaseHandler.insertLike(pp);
+								
+
 								int rnd = new Random().nextInt(colors.length);
 								colorlist.add(colors[rnd]);
 
 							} else if (cards.size() == 2) {
-								
+
 								Popular_Article_Images ccll = cards.get(0);
 								Popular_Article_Images ccll1 = cards.get(1);
 
 								String lookimg = ccll.getLarge_img();
 								String img1 = ccll1.getMedium_img();
 
-								String username = user.getFirst_name() +" "+ user.getLast_name();
+								String username = user.getFirst_name() + " "
+										+ user.getLast_name();
 								String userimg = user.getAndroid_api_img();
 
 								String likes = look.getLikes_count();
@@ -586,18 +602,19 @@ public class PopularFeedFragment extends Fragment {
 										userimg, lookimg, img1, "na", likes,
 										hits, title, "na", "na", "na", "na",
 										String.valueOf(cards.size()), idd,
-										description, is_new,
-										is_liked);
+										description, is_new, is_liked);
 								pojolist.add(pp);
+								likeDatabaseHandler.insertLike(pp);
 								int rnd = new Random().nextInt(colors.length);
 								colorlist.add(colors[rnd]);
 							} else {
-								
+
 								Popular_Article_Images ccll = cards.get(0);
 
 								String lookimg = ccll.getLarge_img();
 
-								String username = user.getFirst_name() +" "+ user.getLast_name();
+								String username = user.getFirst_name() + " "
+										+ user.getLast_name();
 								String userimg = user.getAndroid_api_img();
 
 								String likes = look.getLikes_count();
@@ -612,14 +629,14 @@ public class PopularFeedFragment extends Fragment {
 										userimg, lookimg, "na", "na", likes,
 										hits, title, "na", "na", "na", "na",
 										String.valueOf(cards.size()), idd,
-										description, is_new,
-										is_liked);
+										description, is_new, is_liked);
 								pojolist.add(pp);
+								likeDatabaseHandler.insertLike(pp);
 								int rnd = new Random().nextInt(colors.length);
 								colorlist.add(colors[rnd]);
 							}
 						} catch (Exception e) {
-							
+
 						}
 					}
 				}
@@ -635,9 +652,10 @@ public class PopularFeedFragment extends Fragment {
 							Popular_StoreReview_Users user = store.getUser();
 							Popular_StoreReview_Store likes = store.getStore();
 
-							String username = user.getFirst_name() +" "+ user.getLast_name();
+							String username = user.getFirst_name() + " "
+									+ user.getLast_name();
 							String userimg = user.getAndroid_api_img();
-							//String lookimg = "na";
+							// String lookimg = "na";
 							String likes1 = likes.getLikes_count();
 							String hits = store.getHits();
 
@@ -645,7 +663,7 @@ public class PopularFeedFragment extends Fragment {
 							String store_name = likes.getStore_name();
 							String store_location = likes.getMarket();
 							String store_rate = likes.getOverall_ratings();
-							//String description = "na";
+							// String description = "na";
 							String idd = store.getStore_id();
 							String is_liked = "na";
 							POJO pp = new POJO("StoreReviews", username,
@@ -676,7 +694,7 @@ public class PopularFeedFragment extends Fragment {
 							String likes1 = team.getLikes_count();
 							String hits = team.getHits();
 							String title = team.getTitle();
-							//String description = "na";
+							// String description = "na";
 							String idd = team.getId();
 							String is_liked = "na";
 							POJO pp = new POJO("Teams", username, userimg,
@@ -699,7 +717,7 @@ public class PopularFeedFragment extends Fragment {
 		@Override
 		protected void onPostExecute(Void param) {
 
-			adapter = new PopularAdapter(getActivity(), pojolist, colorlist);
+			adapter = new PopularAdapter1(getActivity(), pojolist, colorlist, likeDatabaseHandler);
 			endlessListView.setAdapter(adapter);
 			adapter.notifyDataSetChanged();
 			// endlessListView.loadMoreCompleat();
@@ -740,7 +758,7 @@ public class PopularFeedFragment extends Fragment {
 
 		@Override
 		protected void onPreExecute() {
-			
+
 			super.onPreExecute();
 
 		}
@@ -778,7 +796,8 @@ public class PopularFeedFragment extends Fragment {
 								String lookimg = ccll.getLarge_img();
 								String img1 = ccll1.getMedium_img();
 								String img2 = ccll2.getMedium_img();
-								String username = user.getFirst_name() +" "+ user.getLast_name();
+								String username = user.getFirst_name() + " "
+										+ user.getLast_name();
 								String userimg = user.getAndroid_api_img();
 
 								String likes = look.getLookbooklike_count();
@@ -791,8 +810,7 @@ public class PopularFeedFragment extends Fragment {
 										userimg, lookimg, img1, img2, likes,
 										hits, title, "na", "na", "na", "na",
 										String.valueOf(cards.size()), idd,
-										description, "na",
-										is_liked);
+										description, "na", is_liked);
 								pojolist.add(pp);
 								int rnd = new Random().nextInt(colors.length);
 								colorlist.add(colors[rnd]);
@@ -804,7 +822,8 @@ public class PopularFeedFragment extends Fragment {
 								String lookimg = ccll.getLarge_img();
 								String img1 = ccll1.getMedium_img();
 
-								String username = user.getFirst_name() +" "+ user.getLast_name();
+								String username = user.getFirst_name() + " "
+										+ user.getLast_name();
 								String userimg = user.getAndroid_api_img();
 
 								String likes = look.getLookbooklike_count();
@@ -817,8 +836,7 @@ public class PopularFeedFragment extends Fragment {
 										userimg, lookimg, img1, "na", likes,
 										hits, title, "na", "na", "na", "na",
 										String.valueOf(cards.size()), idd,
-										description, "na",
-										is_liked);
+										description, "na", is_liked);
 								pojolist.add(pp);
 								int rnd = new Random().nextInt(colors.length);
 								colorlist.add(colors[rnd]);
@@ -828,7 +846,8 @@ public class PopularFeedFragment extends Fragment {
 
 								String lookimg = ccll.getLarge_img();
 
-								String username = user.getFirst_name() +" "+ user.getLast_name();
+								String username = user.getFirst_name() + " "
+										+ user.getLast_name();
 								String userimg = user.getAndroid_api_img();
 
 								String likes = look.getLookbooklike_count();
@@ -841,15 +860,14 @@ public class PopularFeedFragment extends Fragment {
 										userimg, lookimg, "na", "na", likes,
 										hits, title, "na", "na", "na", "na",
 										String.valueOf(cards.size()), idd,
-										description, "na",
-										is_liked);
+										description, "na", is_liked);
 								pojolist.add(pp);
 								int rnd = new Random().nextInt(colors.length);
 								colorlist.add(colors[rnd]);
 							}
 
 						} catch (Exception e) {
-							
+
 						}
 					}
 				}
@@ -866,17 +884,18 @@ public class PopularFeedFragment extends Fragment {
 							ArrayList<Popular_Article_Images> cards = look
 									.getArticle_images();
 
-							//article_image_url_list.clear();
+							// article_image_url_list.clear();
 
 							if (cards.size() >= 3) {
-								
+
 								Popular_Article_Images ccll = cards.get(0);
 								Popular_Article_Images ccll1 = cards.get(1);
 								Popular_Article_Images ccll2 = cards.get(2);
 								String lookimg = ccll.getLarge_img();
 								String img1 = ccll1.getMedium_img();
 								String img2 = ccll2.getMedium_img();
-								String username = user.getFirst_name() +" "+ user.getLast_name();
+								String username = user.getFirst_name() + " "
+										+ user.getLast_name();
 								String userimg = user.getAndroid_api_img();
 
 								String likes = look.getLikes_count();
@@ -890,21 +909,22 @@ public class PopularFeedFragment extends Fragment {
 										userimg, lookimg, img1, img2, likes,
 										hits, title, "na", "na", "na", "na",
 										String.valueOf(cards.size()), idd,
-										description, is_new,
-										is_liked);
+										description, is_new, is_liked);
 								pojolist.add(pp);
+								likeDatabaseHandler.insertLike(pp);
 								int rnd = new Random().nextInt(colors.length);
 								colorlist.add(colors[rnd]);
 
 							} else if (cards.size() == 2) {
-								
+
 								Popular_Article_Images ccll = cards.get(0);
 								Popular_Article_Images ccll1 = cards.get(1);
 
 								String lookimg = ccll.getLarge_img();
 								String img1 = ccll1.getMedium_img();
 
-								String username = user.getFirst_name() +" "+ user.getLast_name();
+								String username = user.getFirst_name() + " "
+										+ user.getLast_name();
 								String userimg = user.getAndroid_api_img();
 
 								String likes = look.getLikes_count();
@@ -918,18 +938,19 @@ public class PopularFeedFragment extends Fragment {
 										userimg, lookimg, img1, "na", likes,
 										hits, title, "na", "na", "na", "na",
 										String.valueOf(cards.size()), idd,
-										description, is_new,
-										is_liked);
+										description, is_new, is_liked);
 								pojolist.add(pp);
+								likeDatabaseHandler.insertLike(pp);
 								int rnd = new Random().nextInt(colors.length);
 								colorlist.add(colors[rnd]);
 							} else {
-								
+
 								Popular_Article_Images ccll = cards.get(0);
 
 								String lookimg = ccll.getLarge_img();
 
-								String username = user.getFirst_name() +" "+ user.getLast_name();
+								String username = user.getFirst_name() + " "
+										+ user.getLast_name();
 								String userimg = user.getAndroid_api_img();
 
 								String likes = look.getLikes_count();
@@ -943,15 +964,15 @@ public class PopularFeedFragment extends Fragment {
 										userimg, lookimg, "na", "na", likes,
 										hits, title, "na", "na", "na", "na",
 										String.valueOf(cards.size()), idd,
-										description, is_new,
-										is_liked);
+										description, is_new, is_liked);
 								pojolist.add(pp);
+								likeDatabaseHandler.insertLike(pp);
 								int rnd = new Random().nextInt(colors.length);
 								colorlist.add(colors[rnd]);
 							}
 
 						} catch (Exception e) {
-							
+
 						}
 					}
 				}
@@ -967,15 +988,16 @@ public class PopularFeedFragment extends Fragment {
 							Popular_StoreReview_Users user = store.getUser();
 							Popular_StoreReview_Store likes = store.getStore();
 
-							String username = user.getFirst_name() +" "+ user.getLast_name();
+							String username = user.getFirst_name() + " "
+									+ user.getLast_name();
 							String userimg = user.getAndroid_api_img();
-							//String lookimg = "na";
+							// String lookimg = "na";
 							String likes1 = likes.getLikes_count();
 							String hits = store.getHits();
 
 							String review = store.getReview();
 							String store_name = likes.getStore_name();
-							//String description = "na";
+							// String description = "na";
 							String store_location = likes.getMarket();
 							String store_rate = likes.getOverall_ratings();
 							String idd = store.getStore_id();
@@ -1006,7 +1028,7 @@ public class PopularFeedFragment extends Fragment {
 							String likes1 = team.getLikes_count();
 							String hits = team.getHits();
 							String title = team.getTitle();
-							//String description = "na";
+							// String description = "na";
 							String idd = team.getId();
 							String is_liked = "na";
 							POJO pp = new POJO("Teams", username, userimg,
@@ -1017,7 +1039,7 @@ public class PopularFeedFragment extends Fragment {
 							int rnd = new Random().nextInt(colors.length);
 							colorlist.add(colors[rnd]);
 						} catch (Exception e) {
-							
+
 						}
 					}
 				}

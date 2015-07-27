@@ -249,6 +249,13 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true" >
 
+               <!--  <RelativeLayout 
+                    android:id="@+id/rel_like"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="22.33dp"
+                    android:layout_marginTop="22.33dp"> -->
                 <ImageView
                     android:id="@+id/img_like"
                     android:layout_width="28dp"
@@ -256,6 +263,16 @@
                     android:layout_centerVertical="true"
                     android:layout_marginBottom="22.33dp"
                     android:layout_marginTop="22.33dp" />
+                
+              <!--   <ImageView
+                    android:id="@+id/img_unlike"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="22.33dp"
+                    android:layout_marginTop="22.33dp"
+                    android:background="@drawable/home_like_inactive" /> -->
+              <!--   </RelativeLayout> -->
 
                 <TextView
                     android:id="@+id/txt_like_count"

@@ -33,6 +33,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.drive.query.internal.InFilter;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -63,15 +64,14 @@ public class PopularAdapter extends BaseAdapter {
 	SharedPreferences pro_user_pref;
 	String article_color;
 	ArrayList<Integer> colorlist;
-	 DataObjectHolder holder;
+	 DataObjectHolder holder = new DataObjectHolder();;
 	public PopularAdapter(Context context, List<POJO> list,
 			ArrayList<Integer> color) {
 		ctx = context;
 		mList = list;
 		this.colorlist = color;
 
-		mInflater = (LayoutInflater) ctx
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		
 
 		/**
 		 * User Login SharedPreferences
@@ -83,13 +83,6 @@ public class PopularAdapter extends BaseAdapter {
 		pro_user_location = pro_user_pref.getString("user_location", "4267");
 		user_email = pro_user_pref.getString("user_email", "9089");
 		user_password = pro_user_pref.getString("password", "sar");
-		// options = new DisplayImageOptions.Builder()
-		// .showStubImage(R.color.clouds)
-		// //.showImageOnLoading(R.drawable.background)
-		// .showImageForEmptyUri(R.drawable.ic_launcher)
-		// .showImageOnFail(R.drawable.ic_launcher).cacheInMemory(true)
-		// .cacheOnDisk(true).considerExifParams(true).build();
-
 	}
 
 	public void addItems(List<POJO> newItems) {
@@ -143,13 +136,17 @@ public class PopularAdapter extends BaseAdapter {
 		// Debug.startMethodTracing("getViewOfTrace");
 		View result = convertView;
 		
-		final POJO pojo = mList.get(position);
+		if (mInflater == null) {
+			mInflater = (LayoutInflater) ctx
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
+		
 
-		// if (result == null) {
+	//	 if (result == null) {
 
-		// LayoutInflater inflater = LayoutInflater.from(ctx);
+		 //LayoutInflater inflater = LayoutInflater.from(ctx);
 		result = mInflater.inflate(R.layout.home_feed_item_layout, null, false);
-		holder = new DataObjectHolder();
+		
 		holder.user_name = (TextView) result.findViewById(R.id.user_name);
 		holder.lookbook_view = (TextView) result.findViewById(R.id.user_view);
 		holder.lookbook_like = (TextView) result
@@ -159,7 +156,9 @@ public class PopularAdapter extends BaseAdapter {
 		holder.look_image = (DynamicImageView) result
 				.findViewById(R.id.img_flash);
 		holder.like_image = (ImageView) result.findViewById(R.id.img_like);
-		holder.like_image.setImageResource(R.drawable.home_like_inactive);
+	//	holder.unlike_image = (ImageView) result.findViewById(R.id.img_unlike);
+	//	holder.rel_like = (RelativeLayout) result.findViewById(R.id.rel_like);
+		//holder.like_image.setImageResource(R.drawable.home_like_inactive);
 		holder.share_image = (ImageView) result.findViewById(R.id.img_share);
 		holder.img1 = (ImageView) result.findViewById(R.id.post_img1);
 		holder.img2 = (ImageView) result.findViewById(R.id.post_img2);
@@ -173,19 +172,18 @@ public class PopularAdapter extends BaseAdapter {
 				.findViewById(R.id.txt_store_location);
 		holder.store_rate = (TextView) result.findViewById(R.id.txt_rate);
 		holder.rel_hit = (RelativeLayout) result.findViewById(R.id.rel_view);
-		holder.rel_store_rate = (RelativeLayout) result
-				.findViewById(R.id.rel_rate);
+		
 		holder.rel_title = (RelativeLayout) result.findViewById(R.id.rel_title);
 		holder.rel_img_count = (RelativeLayout) result
 				.findViewById(R.id.rel_113);
 
-		// result.setTag(holder);
-		//
-		// } else {
-		//
-		// holder = (DataObjectHolder) result.getTag();
-		//
-		// }
+		/* result.setTag(holder);
+		
+		 } else {
+		
+		 holder = (DataObjectHolder) result.getTag();
+		
+		 }*/
 
 		options = new DisplayImageOptions.Builder()
 				.showImageOnLoading(colorlist.get(position))
@@ -194,7 +192,7 @@ public class PopularAdapter extends BaseAdapter {
 				.delayBeforeLoading(500).cacheOnDisk(true).build();
 
 		// BgImageAware imageAware = new BgImageAware(holder.look_image);
-
+		 final POJO pojo = mList.get(position);
 		if (pojo.getMode().equals("Lookbooks")) {
 			try {
 
@@ -271,7 +269,7 @@ public class PopularAdapter extends BaseAdapter {
 
 					@Override
 					public void onClick(View arg0) {
-
+						
 						Intent in = new Intent(ctx, LookbookView.class);
 						in.putExtra("lookbook_id", pojo.getIdd());
 						in.putExtra("username", pojo.getUsername());
@@ -357,13 +355,20 @@ public class PopularAdapter extends BaseAdapter {
 					ImageLoader.getInstance().displayImage(pojo.getLookimg(),
 							holder.look_image, options, animateFirstListener);
 				}
-				Toast.makeText(ctx, pojo.getis_liked(), Toast.LENGTH_SHORT).show();
-				if (pojo.getis_liked().equals("false")) {
+				//Toast.makeText(ctx, pojo.getis_liked(), Toast.LENGTH_SHORT).show();
+				Toast.makeText(ctx, pojo.getIdd(), Toast.LENGTH_SHORT).show();
+				if (pojo.getis_liked().equals("true")) {
 					article_color = "white";
-					holder.like_image.setImageResource(R.drawable.home_like_inactive);
+					holder.like_image.setImageResource(R.drawable.home_like_active);
+					//holder.like_image.setVisibility(View.VISIBLE);
+				//	holder.unlike_image.setVisibility(View.GONE);
+					Log.e("Image_true", ""+holder.like_image.getResources());
 				} else {
 					article_color = "red";
-					holder.like_image.setImageResource(R.drawable.home_like_active);
+					holder.like_image.setImageResource(R.drawable.home_like_inactive);
+					//holder.like_image.setVisibility(View.GONE);
+				//	holder.unlike_image.setVisibility(View.VISIBLE);
+					Log.e("Image_false", ""+holder.like_image.getResources());
 				}
 				
 				holder.review.setVisibility(View.GONE);
@@ -371,10 +376,10 @@ public class PopularAdapter extends BaseAdapter {
 				holder.rel_store_rate.setVisibility(View.GONE);
 
 				holder.user_name.setText(pojo.getUsername());
-				//
+				
 				ImageLoader.getInstance().displayImage(pojo.getUserimg(),
 						holder.user_image, options);
-				//
+				
 				holder.lookbook_view.setText(pojo.getHits());
 				holder.title.setText(pojo.getTitle());
 				holder.lookbook_like.setText(pojo.getLikes());
@@ -384,9 +389,8 @@ public class PopularAdapter extends BaseAdapter {
 
 					@Override
 					public void onClick(View v) {
-						
-
-						Intent in = new Intent(ctx, ArticleView.class);
+						holder.title.setText("ABCD");
+						/*Intent in = new Intent(ctx, ArticleView.class);
 						in.putExtra("article_id", pojo.getIdd());
 						in.putExtra("username", pojo.getUsername());
 						in.putExtra("userpicurl", pojo.getUserimg());
@@ -397,7 +401,7 @@ public class PopularAdapter extends BaseAdapter {
 						in.putExtra("is_new", pojo.getIsnew());
 
 						// in.putExtra("comments", pojo.getIdd());
-						ctx.startActivity(in);
+						ctx.startActivity(in);*/
 
 					}
 				});
@@ -464,19 +468,32 @@ public class PopularAdapter extends BaseAdapter {
 					@Override
 					public void onClick(View v) {
 						
+						
 						if (article_color.equals("white")) {
 							article_color = "red";
-							holder.like_image.setImageResource(R.drawable.home_like_active);
-							long count = Long.parseLong(holder.lookbook_like.getText().toString())+1;
-							holder.lookbook_like.setText(""+count);
-							article_like(pojo.getIdd(), "1",holder.lookbook_like.getText().toString());
+							Toast.makeText(ctx, "Like", Toast.LENGTH_SHORT).show();
+							holder.like_image.setImageResource(0);
+							Log.e("NULL Image", ""+holder.like_image.getResources());
+							holder.like_image.setImageResource(R.drawable.home_like_inactive);
+							//holder.like_image.setVisibility(View.GONE);
+							//holder.unlike_image.setVisibility(View.VISIBLE);
+							Log.e("Image", ""+holder.like_image.getResources());
+							
+							
+							//long count = Long.parseLong(holder.lookbook_like.getText().toString())+1;
+							//holder.lookbook_like.setText(""+count);
+						//	article_like(pojo.getIdd(), "1");
 							
 						} else {
 							article_color = "white";
-							holder.like_image.setImageResource(R.drawable.home_like_inactive);
-							long count = Long.parseLong(holder.lookbook_like.getText().toString())-1;
-							holder.lookbook_like.setText(""+count);
-							article_like(pojo.getIdd(), "0",holder.lookbook_like.getText().toString());
+							holder.like_image.setImageResource(0);
+							holder.like_image.setImageResource(R.drawable.home_like_active);
+							//holder.like_image.setVisibility(View.VISIBLE);
+							//holder.unlike_image.setVisibility(View.GONE);
+							Toast.makeText(ctx, "UnLike", Toast.LENGTH_SHORT).show();
+							//long count = Long.parseLong(holder.lookbook_like.getText().toString())-1;
+							//holder.lookbook_like.setText(""+count);
+						//	article_like(pojo.getIdd(), "0");
 							
 						}
 					}
@@ -608,10 +625,10 @@ public class PopularAdapter extends BaseAdapter {
 		ImageView user_image;
 		TextView title;
 		DynamicImageView look_image;
-		ImageView like_image, share_image;
+		ImageView like_image, share_image, unlike_image;
 		ImageView img1, img2;
 		RelativeLayout last_text, rel_hit, rel_store_rate, rel_title,
-				rel_img_count;
+				rel_img_count, rel_like;
 		TextView image_count;
 		TextView review, store_name, store_address, store_rate;
 
@@ -637,7 +654,7 @@ public class PopularAdapter extends BaseAdapter {
 		}
 	}
 	
-	public void article_like(String article_id, final String like_get, final String get_likes) {
+	public void article_like(String article_id, final String like_get) {
 		Log.e("URL", ctx.getString(R.string.base_url) + "articles/like/"
 				+ article_id + ".json");
 		pro_user_pref = ctx.getSharedPreferences("User_detail", 0);
@@ -691,6 +708,16 @@ public class PopularAdapter extends BaseAdapter {
 				Log.e("FAIL", "FAIL");
 			}
 		});
+	}
+	
+	@Override
+	public int getViewTypeCount() {
+		// TODO Auto-generated method stub
+		if (getCount() != 0) 
+			return getCount();	
+		
+		return 1;
+		
 	}
 
 }
