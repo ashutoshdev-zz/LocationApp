@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/rel1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#000000" >
+
+        <RelativeLayout
+            android:id="@+id/rel_back"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true" >
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/home_back" />
+            
+            <TextView
+            android:id="@+id/txt_image_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:text="IMAGE DETAIL"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+        </RelativeLayout>
+
+        
+
+        <Button
+            android:id="@+id/imageView1"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/publish_button" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/txt_lookbook_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="Lookbook title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#000000"
+            android:textSize="14dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edt_title"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_alignLeft="@+id/txt_lookbook_title"
+            android:layout_below="@+id/txt_lookbook_title"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/storename_box"
+            android:ems="10"
+            android:hint="Type your title (max. 120 characters)"
+            android:maxLength="120"
+            android:padding="5dp"
+            android:textColor="#000000"
+            android:textSize="12dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_weight="1" >
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/rel2"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/share_bg"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/txt_frnds_krnow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="Let your friends know about it:"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#000000"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/toog"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            android:weightSum="3" >
+
+            <LinearLayout
+                android:id="@+id/LinearLayout02"
+                android:layout_width="fill_parent"
+                android:layout_height="28dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txt_facebook_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="25dp"
+                    android:gravity="center"
+                    android:text="Facebook Share"
+                    android:textColor="#000000"
+                    android:textSize="15dp" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_facebook"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="25dp"
+                    android:background="@drawable/toggle_selector"
+                    android:checked="false"
+                    android:textOn=""
+                    android:textOff="" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LinearLayout01"
+                android:layout_width="fill_parent"
+                android:layout_height="28dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center" 
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txt_twitter_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="25dp"
+                    android:gravity="center"
+                    android:text="Twitter Share"
+                    android:textColor="#000000"
+                    android:textSize="15dp" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_twitter"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="45dp"
+                    android:background="@drawable/toggle_selector"
+                    android:checked="false"
+                    android:textOn=""
+                    android:textOff="" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/child1"
+                android:layout_width="fill_parent"
+                android:layout_height="28dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/txt_googleP_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="30dp"
+                    android:gravity="center"
+                    android:text="Google+ Share"
+                    android:textColor="#000000"
+                    android:textSize="15dp" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_gplus"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="30dp"
+                    android:background="@drawable/toggle_selector"
+                    android:checked="false" 
+                    android:textOn=""
+                    android:textOff=""/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="3dp"
+        android:layout_weight="1"
+        android:background="#131313"
+        android:gravity="center" >
+
+        <com.image.effects.HorizontalListView
+            android:id="@+id/listview"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_photostream"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center" >
+        </com.image.effects.HorizontalListView>
+
+        <TextView
+            android:id="@+id/txt_photostream"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="4dp"
+            android:text="Photostream"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff"
+            android:textSize="15dp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/meeee"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:background="#000000"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="4" >
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="-5dp"
+            android:layout_weight="1"
+            android:src="@drawable/upload_upload_on" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_weight="1"
+            android:src="@drawable/upload_filter_on" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_weight="1"
+            android:src="@drawable/upload_tag_on" />
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_weight="1"
+            android:src="@drawable/upload_title_on" />
+    </LinearLayout>
+
+</LinearLayout>

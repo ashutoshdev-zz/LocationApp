@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/rel_comment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+    
+    <RelativeLayout
+        android:id="@+id/rel_comment_main"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="18.33dp"
+        android:layout_marginLeft="10.67dp"
+        android:layout_marginRight="10.67dp"
+        android:layout_marginTop="21.33dp" >
+
+        <RelativeLayout
+            android:id="@+id/rel_prof"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <com.zakoopi.helper.CircleImageView
+                android:id="@+id/img_profile"
+                android:layout_width="32.67dp"
+                android:layout_height="32.67dp"
+                android:src="@drawable/home_profile_pic" />
+            
+            <TextView
+                android:id="@+id/txt_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="7.33dp"
+                android:layout_toRightOf="@+id/img_profile"
+                android:text="Zakoopi"
+                android:textColor="#4d4d49" />
+
+        </RelativeLayout>
+        
+        <RelativeLayout 
+            android:id="@+id/rel_review"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rel_prof"
+            android:layout_marginTop="10.33dp">
+            
+            <TextView 
+                android:id="@+id/txt_review"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="test review test review test review test review test review test reviewtest review test review test review test review"
+                android:textColor="#000000"
+                android:textSize="13sp"/>
+        </RelativeLayout>
+    </RelativeLayout>
+    
+    <View 
+        android:id="@+id/view"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/rel_comment_main"
+        android:background="#d2d2d2"/>
+</RelativeLayout>
+</RelativeLayout>
