@@ -20,7 +20,6 @@ import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,6 +35,7 @@ import com.google.gson.stream.JsonReader;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.zakoopi.R;
+import com.zakoopi.database.HomeFeedLikeDatabaseHandler;
 import com.zakoopi.endlist.EndlessListView;
 import com.zakoopi.helper.MaterialProgressBar;
 import com.zakoopi.helper.POJO;
@@ -52,12 +52,12 @@ import com.zakoopi.homefeed.Recent_StoreReview_Users;
 import com.zakoopi.homefeed.Recent_Teamsdata;
 import com.zakoopi.homefeed.recentfeed;
 import com.zakoopi.utils.ClientHttp;
-import com.zakoopi.utils.RecentAdapter;
+import com.zakoopi.utils.RecentAdapter1;
 
 @SuppressWarnings("deprecation")
 public class RecentFeedFragment extends Fragment {
 
-	private RecentAdapter adapter;
+	private RecentAdapter1 adapter;
 	private EndlessListView endlessListView;
 	// private static final String FILENAME = "myFile.txt";
 	// private int mCount;
@@ -88,6 +88,7 @@ public class RecentFeedFragment extends Fragment {
 	Integer[] colors = { R.color.brown, R.color.purple, R.color.bgreen,
 			R.color.olive, R.color.silver, R.color.iridium, R.color.blue1,
 			R.color.green1, R.color.gray, R.color.maroon };
+	HomeFeedLikeDatabaseHandler likeDatabaseHandler;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -105,7 +106,7 @@ public class RecentFeedFragment extends Fragment {
 
 		RECENT_REST_URL = getString(R.string.base_url)
 				+ "feedRecent.json?page=";
-
+		likeDatabaseHandler = new HomeFeedLikeDatabaseHandler(getActivity());
 		/**
 		 * User Login SharedPreferences
 		 */
@@ -259,7 +260,7 @@ public class RecentFeedFragment extends Fragment {
 	 * recent_homeFeed page
 	 */
 	public void recent_homeFeed(int page) {
-		Log.e("url", RECENT_REST_URL + page);
+		// Log.e("url", RECENT_REST_URL + page);
 		client.setBasicAuth(user_email, user_password);
 		client.getHttpClient().getParams()
 				.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
@@ -315,7 +316,7 @@ public class RecentFeedFragment extends Fragment {
 	 * @recent_loadmoreFeed page
 	 */
 	public void recent_loadmoreFeed(int page) {
-		Log.e("url", RECENT_REST_URL + page);
+		// Log.e("url", RECENT_REST_URL + page);
 		client.setBasicAuth(user_email, user_password);
 		client.getHttpClient().getParams()
 				.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
@@ -442,13 +443,16 @@ public class RecentFeedFragment extends Fragment {
 							String title = look.getTitle();
 							String description = ccll.getDescription();
 							String idd = look.getId();
+							String is_liked = look.getIs_liked();
 							POJO pp = new POJO("Lookbooks", username, userimg,
 									lookimg, img1, img2, likes, hits, title,
 									"na", "na", "na", "na",
 									String.valueOf(cards.size()), idd,
-									description, "na", "na");
+									description, "na", is_liked);
 
 							pojolist.add(pp);
+							likeDatabaseHandler.allDelete();
+							likeDatabaseHandler.insertLike(pp);
 							int rnd = new Random().nextInt(colors.length);
 							colorlist.add(colors[rnd]);
 
@@ -469,14 +473,16 @@ public class RecentFeedFragment extends Fragment {
 							String title = look.getTitle();
 							String description = ccll.getDescription();
 							String idd = look.getId();
-
+							String is_liked = look.getIs_liked();
 							POJO pp = new POJO("Lookbooks", username, userimg,
 									lookimg, img1, "na", likes, hits, title,
 									"na", "na", "na", "na",
 									String.valueOf(cards.size()), idd,
-									description, "na", "na");
+									description, "na", is_liked);
 
 							pojolist.add(pp);
+							likeDatabaseHandler.allDelete();
+							likeDatabaseHandler.insertLike(pp);
 							int rnd = new Random().nextInt(colors.length);
 							colorlist.add(colors[rnd]);
 
@@ -495,13 +501,15 @@ public class RecentFeedFragment extends Fragment {
 							String title = look.getTitle();
 							String description = ccll.getDescription();
 							String idd = look.getId();
-
+							String is_liked = look.getIs_liked();
 							POJO pp = new POJO("Lookbooks", username, userimg,
 									lookimg, "na", "na", likes, hits, title,
 									"na", "na", "na", "na",
 									String.valueOf(cards.size()), idd,
-									description, "na", "na");
+									description, "na", is_liked);
 							pojolist.add(pp);
+							likeDatabaseHandler.allDelete();
+							likeDatabaseHandler.insertLike(pp);
 							int rnd = new Random().nextInt(colors.length);
 							colorlist.add(colors[rnd]);
 
@@ -547,6 +555,8 @@ public class RecentFeedFragment extends Fragment {
 									String.valueOf(cards.size()), idd,
 									description, is_new, is_liked);
 							pojolist.add(pp);
+							likeDatabaseHandler.allDelete();
+							likeDatabaseHandler.insertLike(pp);
 							int rnd = new Random().nextInt(colors.length);
 							colorlist.add(colors[rnd]);
 
@@ -575,6 +585,8 @@ public class RecentFeedFragment extends Fragment {
 									String.valueOf(cards.size()), idd,
 									description, is_new, is_liked);
 							pojolist.add(pp);
+							likeDatabaseHandler.allDelete();
+							likeDatabaseHandler.insertLike(pp);
 							int rnd = new Random().nextInt(colors.length);
 							colorlist.add(colors[rnd]);
 						} else {
@@ -600,6 +612,8 @@ public class RecentFeedFragment extends Fragment {
 									String.valueOf(cards.size()), idd,
 									description, is_new, is_liked);
 							pojolist.add(pp);
+							likeDatabaseHandler.allDelete();
+							likeDatabaseHandler.insertLike(pp);
 							int rnd = new Random().nextInt(colors.length);
 							colorlist.add(colors[rnd]);
 						}
@@ -629,12 +643,15 @@ public class RecentFeedFragment extends Fragment {
 						String store_location = likes.getMarket();
 						String store_rate = likes.getOverall_ratings();
 						String idd = store.getStore_id();
-
+						String is_liked = store.getIs_liked();
 						POJO pp = new POJO("StoreReviews", username, userimg,
 								"na", "na", "na", likes1, hits, "na",
 								store_name, store_location, store_rate, review,
-								"na", idd, "na", "na", "na");
+								"na", idd, "na", "na", is_liked);
 						pojolist.add(pp);
+						likeDatabaseHandler.allDelete();
+						likeDatabaseHandler.insertLike(pp);
+						int rnd = new Random().nextInt(colors.length);
 						colorlist.add(R.color.tabscolor);
 
 					} catch (Exception e) {
@@ -662,8 +679,10 @@ public class RecentFeedFragment extends Fragment {
 
 						POJO pp = new POJO("Teams", username, userimg, lookimg,
 								"na", "na", likes1, hits, title, "na", "na",
-								"na", "na", "na", idd, "na", "na", "na");
+								"na", "na", "na", idd, "na", "na", "false");
 						pojolist.add(pp);
+						likeDatabaseHandler.allDelete();
+						likeDatabaseHandler.insertLike(pp);
 						int rnd = new Random().nextInt(colors.length);
 						colorlist.add(colors[rnd]);
 					} catch (Exception e) {
@@ -677,7 +696,7 @@ public class RecentFeedFragment extends Fragment {
 
 		@Override
 		protected void onPostExecute(Void param) {
-			adapter = new RecentAdapter(getActivity(), pojolist, colorlist);
+			adapter = new RecentAdapter1(getActivity(), pojolist, colorlist,likeDatabaseHandler);
 
 			endlessListView.setAdapter(adapter);
 			adapter.notifyDataSetChanged();
@@ -762,14 +781,15 @@ public class RecentFeedFragment extends Fragment {
 							String title = look.getTitle();
 							String description = ccll.getDescription();
 							String idd = look.getId();
-
+							String is_liked = look.getIs_liked();
 							POJO pp = new POJO("Lookbooks", username, userimg,
 									lookimg, img1, img2, likes, hits, title,
 									"na", "na", "na", "na",
 									String.valueOf(cards.size()), idd,
-									description, "na", "na");
+									description, "na", is_liked);
 
 							pojolist.add(pp);
+							likeDatabaseHandler.insertLike(pp);
 							int rnd = new Random().nextInt(colors.length);
 							colorlist.add(colors[rnd]);
 						} else if (cards.size() == 2) {
@@ -789,13 +809,15 @@ public class RecentFeedFragment extends Fragment {
 							String title = look.getTitle();
 							String description = ccll.getDescription();
 							String idd = look.getId();
+							String is_liked = look.getIs_liked();
 							POJO pp = new POJO("Lookbooks", username, userimg,
 									lookimg, img1, "na", likes, hits, title,
 									"na", "na", "na", "na",
 									String.valueOf(cards.size()), idd,
-									description, "na", "na");
+									description, "na", is_liked);
 
 							pojolist.add(pp);
+							likeDatabaseHandler.insertLike(pp);
 							int rnd = new Random().nextInt(colors.length);
 							colorlist.add(colors[rnd]);
 						} else {
@@ -813,12 +835,14 @@ public class RecentFeedFragment extends Fragment {
 							String title = look.getTitle();
 							String description = ccll.getDescription();
 							String idd = look.getId();
+							String is_liked = look.getIs_liked();
 							POJO pp = new POJO("Lookbooks", username, userimg,
 									lookimg, "na", "na", likes, hits, title,
 									"na", "na", "na", "na",
 									String.valueOf(cards.size()), idd,
-									description, "na", "na");
+									description, "na", is_liked);
 							pojolist.add(pp);
+							likeDatabaseHandler.insertLike(pp);
 							int rnd = new Random().nextInt(colors.length);
 							colorlist.add(colors[rnd]);
 						}
@@ -863,6 +887,7 @@ public class RecentFeedFragment extends Fragment {
 									String.valueOf(cards.size()), idd,
 									description, is_new, is_liked);
 							pojolist.add(pp);
+							likeDatabaseHandler.insertLike(pp);
 							int rnd = new Random().nextInt(colors.length);
 							colorlist.add(colors[rnd]);
 
@@ -891,6 +916,7 @@ public class RecentFeedFragment extends Fragment {
 									String.valueOf(cards.size()), idd,
 									description, is_new, is_liked);
 							pojolist.add(pp);
+							likeDatabaseHandler.insertLike(pp);
 							int rnd = new Random().nextInt(colors.length);
 							colorlist.add(colors[rnd]);
 						} else {
@@ -916,6 +942,7 @@ public class RecentFeedFragment extends Fragment {
 									String.valueOf(cards.size()), idd,
 									description, is_new, is_liked);
 							pojolist.add(pp);
+							likeDatabaseHandler.insertLike(pp);
 							int rnd = new Random().nextInt(colors.length);
 							colorlist.add(colors[rnd]);
 						}
@@ -946,12 +973,14 @@ public class RecentFeedFragment extends Fragment {
 						String store_rate = likes.getOverall_ratings();
 						// String description = "na";
 						String idd = store.getStore_id();
-
+						String is_liked = store.getIs_liked();
 						POJO pp = new POJO("StoreReviews", username, userimg,
 								"na", "na", "na", likes1, hits, "na",
 								store_name, store_location, store_rate, review,
-								"na", idd, "na", "na", "na");
+								"na", idd, "na", "na", is_liked);
 						pojolist.add(pp);
+						likeDatabaseHandler.insertLike(pp);
+						int rnd = new Random().nextInt(colors.length);
 						colorlist.add(R.color.tabscolor);
 					} catch (Exception e) {
 					}
@@ -975,8 +1004,9 @@ public class RecentFeedFragment extends Fragment {
 						String idd = team.getId();
 						POJO pp = new POJO("Teams", username, userimg, lookimg,
 								"na", "na", likes1, hits, title, "na", "na",
-								"na", "na", "na", idd, "na", "na", "na");
+								"na", "na", "na", idd, "na", "na", "false");
 						pojolist.add(pp);
+						likeDatabaseHandler.insertLike(pp);
 						int rnd = new Random().nextInt(colors.length);
 						colorlist.add(colors[rnd]);
 					} catch (Exception e) {

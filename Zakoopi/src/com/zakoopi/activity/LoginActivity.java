@@ -25,7 +25,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -510,7 +509,7 @@ public class LoginActivity extends FragmentActivity implements
 	@SuppressWarnings("deprecation")
 	public void upload(String result, String imgurl, String type, String email) {
 		// client.setBasicAuth("a.himanshu.verma@gmail.com", "dragonvrmxt2t");
-		Log.e("Login", LOOKBOOK_URL);
+		//Log.e("Login", LOOKBOOK_URL);
 		client.getHttpClient().getParams()
 				.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
 		client.setTimeout(DEFAULT_TIMEOUT);
@@ -530,9 +529,11 @@ public class LoginActivity extends FragmentActivity implements
 			@Override
 			public void onStart() {
 				// called before request is started
-				/*mProgressHUD = ProgressHUD.show(LoginActivity.this,
-						"Processing...", true, true, LoginActivity.this);
-				mProgressHUD.setCancelable(false);*/
+				/*
+				 * mProgressHUD = ProgressHUD.show(LoginActivity.this,
+				 * "Processing...", true, true, LoginActivity.this);
+				 * mProgressHUD.setCancelable(false);
+				 */
 			}
 
 			@Override
@@ -549,10 +550,10 @@ public class LoginActivity extends FragmentActivity implements
 					while ((st = br.readLine()) != null) {
 
 						st1 = st1 + st;
-						Log.e("success", "success");
+						//Log.e("success", "success");
 
 					}
-					Log.e("RES", st1);
+					//Log.e("RES", st1);
 					show_user(st1);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -563,8 +564,8 @@ public class LoginActivity extends FragmentActivity implements
 			public void onFailure(int statusCode, Header[] headers,
 					byte[] errorResponse, Throwable e) {
 				// called when response HTTP status is "4XX" (eg. 401, 403, 404)
-				Log.e("falied", e.getMessage() + "");
-			//	mProgressHUD.dismiss();
+				//Log.e("falied", e.getMessage() + "");
+				// mProgressHUD.dismiss();
 
 			}
 
@@ -581,10 +582,10 @@ public class LoginActivity extends FragmentActivity implements
 		Gson gson = new Gson();
 		JsonReader jsonReader = new JsonReader(new StringReader(show));
 		jsonReader.setLenient(true);
-		Log.e("SHOW", "SHOW");
+	//	Log.e("SHOW", "SHOW");
 		User main_user1 = gson.fromJson(jsonReader, User.class);
 		// UserDetails main_user = gson.fromJson(jsonReader, UserDetails.class);
-		Log.e("SHOW1", "SHOW1");
+		//Log.e("SHOW1", "SHOW1");
 		UserDetails main_user = main_user1.getUser();
 
 		new MyApp1().execute(main_user);
@@ -640,7 +641,7 @@ public class LoginActivity extends FragmentActivity implements
 					MainActivity.class);
 			startActivity(main_activity);
 			finish();
-			//mProgressHUD.dismiss();
+			// mProgressHUD.dismiss();
 
 		}
 

@@ -22,7 +22,6 @@ import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -239,7 +238,7 @@ public class PopularFeedFragment extends Fragment {
 	 */
 	public void popular_feed(int page) {
 		long time = System.currentTimeMillis();
-		Log.e("url", POPULAR_REST_URL + page + "&_=" + time);
+		// Log.e("url", POPULAR_REST_URL + page + "&_=" + time);
 		client.setBasicAuth(user_email, user_password);
 		client.getHttpClient().getParams()
 				.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
@@ -270,7 +269,7 @@ public class PopularFeedFragment extends Fragment {
 							}
 
 							showData(text);
-							Log.e("Success", "-----" + text);
+							// Log.e("Success", "-----" + text);
 						} catch (Exception e) {
 
 							e.printStackTrace();
@@ -280,7 +279,7 @@ public class PopularFeedFragment extends Fragment {
 					@Override
 					public void onFailure(int statusCode, Header[] headers,
 							byte[] errorResponse, Throwable e) {
-						Log.e("FAIL", "" + e.getMessage());
+						// Log.e("FAIL", "" + e.getMessage());
 						endlessListView.loadMoreCompleat();
 						diaog.dismiss();
 					}
@@ -298,7 +297,7 @@ public class PopularFeedFragment extends Fragment {
 	 */
 	public void popular_loadmoreFeed(int page) {
 		long time = System.currentTimeMillis();
-		Log.e("url", POPULAR_REST_URL + page + "&_=" + time);
+		// Log.e("url", POPULAR_REST_URL + page + "&_=" + time);
 
 		client.setBasicAuth(user_email, user_password);
 
@@ -351,7 +350,7 @@ public class PopularFeedFragment extends Fragment {
 							}
 
 							showmoreData(st1);
-							Log.e("jjjjj", st1);
+							// Log.e("jjjjj", st1);
 
 						} catch (Exception e) {
 
@@ -364,8 +363,8 @@ public class PopularFeedFragment extends Fragment {
 							byte[] errorResponse, Throwable e) {
 						// called when response HTTP status is "4XX" (eg. 401,
 						// 403, 404)
-						Log.e("ggggg", e.getMessage() + "vvvvvv   "
-								+ statusCode);
+						// Log.e("ggggg", e.getMessage() + "vvvvvv   "
+						// + statusCode);
 						endlessListView.loadMoreCompleat();
 					}
 
@@ -465,7 +464,7 @@ public class PopularFeedFragment extends Fragment {
 								String hits = look.getView_count();
 								String title = look.getTitle();
 								String description = ccll.getDescription();
-								String is_liked = "na";
+								String is_liked = look.getIs_liked();
 								String idd = look.getId();
 								POJO pp = new POJO("Lookbooks", username,
 										userimg, lookimg, img1, img2, likes,
@@ -473,7 +472,8 @@ public class PopularFeedFragment extends Fragment {
 										String.valueOf(cards.size()), idd,
 										description, "na", is_liked);
 								pojolist.add(pp);
-
+								likeDatabaseHandler.allDelete();
+								likeDatabaseHandler.insertLike(pp);
 								int rnd = new Random().nextInt(colors.length);
 								colorlist.add(colors[rnd]);
 							} else if (cards.size() == 2) {
@@ -493,13 +493,15 @@ public class PopularFeedFragment extends Fragment {
 								String title = look.getTitle();
 								String description = ccll.getDescription();
 								String idd = look.getId();
-								// String is_liked = "na";
+								String is_liked = look.getIs_liked();
 								POJO pp = new POJO("Lookbooks", username,
 										userimg, lookimg, img1, "na", likes,
 										hits, title, "na", "na", "na", "na",
 										String.valueOf(cards.size()), idd,
-										description, "na", "na");
+										description, "na", is_liked);
 								pojolist.add(pp);
+								likeDatabaseHandler.allDelete();
+								likeDatabaseHandler.insertLike(pp);
 								int rnd = new Random().nextInt(colors.length);
 								colorlist.add(colors[rnd]);
 							} else {
@@ -517,14 +519,16 @@ public class PopularFeedFragment extends Fragment {
 								String title = look.getTitle();
 								String description = ccll.getDescription();
 								String idd = look.getId();
-								// String is_liked = "na";
+								String is_liked = look.getIs_liked();
 
 								POJO pp = new POJO("Lookbooks", username,
 										userimg, lookimg, "na", "na", likes,
 										hits, title, "na", "na", "na", "na",
 										String.valueOf(cards.size()), idd,
-										description, "na", "na");
+										description, "na", is_liked);
 								pojolist.add(pp);
+								likeDatabaseHandler.allDelete();
+								likeDatabaseHandler.insertLike(pp);
 								int rnd = new Random().nextInt(colors.length);
 								colorlist.add(colors[rnd]);
 							}
@@ -572,9 +576,8 @@ public class PopularFeedFragment extends Fragment {
 										String.valueOf(cards.size()), idd,
 										description, is_new, is_liked);
 								pojolist.add(pp);
-likeDatabaseHandler.allDelete();
+								likeDatabaseHandler.allDelete();
 								likeDatabaseHandler.insertLike(pp);
-								
 
 								int rnd = new Random().nextInt(colors.length);
 								colorlist.add(colors[rnd]);
@@ -665,13 +668,15 @@ likeDatabaseHandler.allDelete();
 							String store_rate = likes.getOverall_ratings();
 							// String description = "na";
 							String idd = store.getStore_id();
-							String is_liked = "na";
+							String is_liked = store.getIs_liked();
 							POJO pp = new POJO("StoreReviews", username,
 									userimg, "na", "na", "na", likes1, hits,
 									"na", store_name, store_location,
 									store_rate, review, "na", idd, "na", "na",
 									is_liked);
 							pojolist.add(pp);
+							likeDatabaseHandler.allDelete();
+							likeDatabaseHandler.insertLike(pp);
 							colorlist.add(R.color.tabscolor);
 
 						} catch (Exception e) {
@@ -696,12 +701,14 @@ likeDatabaseHandler.allDelete();
 							String title = team.getTitle();
 							// String description = "na";
 							String idd = team.getId();
-							String is_liked = "na";
+							//String is_liked = "na";
 							POJO pp = new POJO("Teams", username, userimg,
 									lookimg, "na", "na", likes1, hits, title,
 									"na", "na", "na", "na", "na", idd, "na",
-									"na", is_liked);
+									"na", "false");
 							pojolist.add(pp);
+							likeDatabaseHandler.allDelete();
+							likeDatabaseHandler.insertLike(pp);
 							int rnd = new Random().nextInt(colors.length);
 							colorlist.add(colors[rnd]);
 						} catch (Exception e) {
@@ -717,7 +724,8 @@ likeDatabaseHandler.allDelete();
 		@Override
 		protected void onPostExecute(Void param) {
 
-			adapter = new PopularAdapter1(getActivity(), pojolist, colorlist, likeDatabaseHandler);
+			adapter = new PopularAdapter1(getActivity(), pojolist, colorlist,
+					likeDatabaseHandler);
 			endlessListView.setAdapter(adapter);
 			adapter.notifyDataSetChanged();
 			// endlessListView.loadMoreCompleat();
@@ -805,13 +813,15 @@ likeDatabaseHandler.allDelete();
 								String title = look.getTitle();
 								String description = ccll.getDescription();
 								String idd = look.getId();
-								String is_liked = "na";
+								String is_liked = look.getIs_liked();
 								POJO pp = new POJO("Lookbooks", username,
 										userimg, lookimg, img1, img2, likes,
 										hits, title, "na", "na", "na", "na",
 										String.valueOf(cards.size()), idd,
 										description, "na", is_liked);
 								pojolist.add(pp);
+								
+								likeDatabaseHandler.insertLike(pp);
 								int rnd = new Random().nextInt(colors.length);
 								colorlist.add(colors[rnd]);
 							} else if (cards.size() == 2) {
@@ -831,13 +841,15 @@ likeDatabaseHandler.allDelete();
 								String title = look.getTitle();
 								String description = ccll.getDescription();
 								String idd = look.getId();
-								String is_liked = "na";
+								String is_liked = look.getIs_liked();
 								POJO pp = new POJO("Lookbooks", username,
 										userimg, lookimg, img1, "na", likes,
 										hits, title, "na", "na", "na", "na",
 										String.valueOf(cards.size()), idd,
 										description, "na", is_liked);
 								pojolist.add(pp);
+								
+								likeDatabaseHandler.insertLike(pp);
 								int rnd = new Random().nextInt(colors.length);
 								colorlist.add(colors[rnd]);
 							} else {
@@ -855,13 +867,15 @@ likeDatabaseHandler.allDelete();
 								String title = look.getTitle();
 								String description = ccll.getDescription();
 								String idd = look.getId();
-								String is_liked = "na";
+								String is_liked = look.getIs_liked();
 								POJO pp = new POJO("Lookbooks", username,
 										userimg, lookimg, "na", "na", likes,
 										hits, title, "na", "na", "na", "na",
 										String.valueOf(cards.size()), idd,
 										description, "na", is_liked);
 								pojolist.add(pp);
+								
+								likeDatabaseHandler.insertLike(pp);
 								int rnd = new Random().nextInt(colors.length);
 								colorlist.add(colors[rnd]);
 							}
@@ -941,6 +955,7 @@ likeDatabaseHandler.allDelete();
 										description, is_new, is_liked);
 								pojolist.add(pp);
 								likeDatabaseHandler.insertLike(pp);
+								
 								int rnd = new Random().nextInt(colors.length);
 								colorlist.add(colors[rnd]);
 							} else {
@@ -1001,13 +1016,14 @@ likeDatabaseHandler.allDelete();
 							String store_location = likes.getMarket();
 							String store_rate = likes.getOverall_ratings();
 							String idd = store.getStore_id();
-							String is_liked = "na";
+							String is_liked = store.getIs_liked();
 							POJO pp = new POJO("StoreReviews", username,
 									userimg, "na", "na", "na", likes1, hits,
 									"na", store_name, store_location,
 									store_rate, review, "na", idd, "na", "na",
 									is_liked);
 							pojolist.add(pp);
+							likeDatabaseHandler.insertLike(pp);
 							colorlist.add(R.color.tabscolor);
 						} catch (Exception e) {
 						}
@@ -1030,12 +1046,13 @@ likeDatabaseHandler.allDelete();
 							String title = team.getTitle();
 							// String description = "na";
 							String idd = team.getId();
-							String is_liked = "na";
+							//String is_liked = "na";
 							POJO pp = new POJO("Teams", username, userimg,
 									lookimg, "na", "na", likes1, hits, title,
 									"na", "na", "na", "na", "na", idd, "na",
-									"na", is_liked);
+									"na", "false");
 							pojolist.add(pp);
+							likeDatabaseHandler.insertLike(pp);
 							int rnd = new Random().nextInt(colors.length);
 							colorlist.add(colors[rnd]);
 						} catch (Exception e) {

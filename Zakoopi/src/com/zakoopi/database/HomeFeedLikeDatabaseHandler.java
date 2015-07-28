@@ -32,8 +32,8 @@ public class HomeFeedLikeDatabaseHandler extends SQLiteOpenHelper {
 		// TODO Auto-generated method stub
 
 		String CRETAE_LIKE_TABLE = "CREATE TABLE " + TABLE_LIKE + "(" + KEY_ID
-				+ " INTEGER PRIMARY KEY," + KEY_LIKE_VALUE + " TEXT,"
-				+ KEY_VIEW_ID + " TEXT" + ")";
+				+ " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_LIKE_VALUE
+				+ " TEXT," + KEY_VIEW_ID + " INTEGER" + ")";
 
 		db.execSQL(CRETAE_LIKE_TABLE);
 	}
@@ -49,7 +49,7 @@ public class HomeFeedLikeDatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(KEY_LIKE_VALUE, pojo.getis_liked());
-		values.put(KEY_VIEW_ID, pojo.getIdd());
+		values.put(KEY_VIEW_ID, Integer.parseInt(pojo.getIdd()));
 		db.insert(TABLE_LIKE, null, values);
 	}
 
@@ -60,14 +60,15 @@ public class HomeFeedLikeDatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_VIEW_ID, view1_id);
 
 		// updating row
-		db.update(TABLE_LIKE, values, KEY_ID+"="+view1_id, null);
-		Log.e("UPDATE", like_value + "----" + view1_id);
+		db.update(TABLE_LIKE, values, KEY_VIEW_ID + " = " + view1_id, null);
+		// Log.e("UPDATE", like_value + "----" + view1_id);
 	}
 
 	public MyDbvar likeShow() {
-		
-		MyDbvar vvv= new MyDbvar();
-		String selectQuery = "SELECT id,view_ids,like_status FROM " + TABLE_LIKE;
+
+		MyDbvar vvv = new MyDbvar();
+		String selectQuery = "SELECT id,view_ids,like_status FROM "
+				+ TABLE_LIKE;
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -76,53 +77,48 @@ public class HomeFeedLikeDatabaseHandler extends SQLiteOpenHelper {
 
 				String name = cursor.getString(cursor
 						.getColumnIndex("like_status"));
-				String id = cursor.getString(cursor
-						.getColumnIndex("id"));
+				String id = cursor.getString(cursor.getColumnIndex("id"));
 				String viewid = cursor.getString(cursor
 						.getColumnIndex("view_ids"));
-				
+
 				vvv.setStatus(name);
 				vvv.setId(id);
 				vvv.setView_id(viewid);
-				
-				Log.e("GETALL", "" + name);
+
+				// Log.e("LikeShow", "" + name);
 			} while (cursor.moveToNext());
 		}
 
 		return vvv;
 	}
-	
-	
+
 	public ArrayList<String> getAllLike() {
 		ArrayList<String> like_list = new ArrayList<String>();
-		String selectQuery = "SELECT id,view_ids,like_status FROM " + TABLE_LIKE;
+		String selectQuery = "SELECT like_status FROM "
+				+ TABLE_LIKE;
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
-		
+
 		if (cursor.moveToFirst()) {
 			do {
 
 				String name = cursor.getString(cursor
 						.getColumnIndex("like_status"));
-				String id = cursor.getString(cursor
-						.getColumnIndex("id"));
-				String viewid = cursor.getString(cursor
-						.getColumnIndex("view_ids"));
-				
+
 				like_list.add(name);
-				
-				Log.e("GETALL", "" + name);
+
+				// Log.e("GETALLLike", "" + name);
 			} while (cursor.moveToNext());
 		}
-		
+
 		return like_list;
-		
+
 	}
-	
+
 	public void allDelete() {
 		SQLiteDatabase db = this.getReadableDatabase();
 		db.delete(TABLE_LIKE, null, null);
-		//db.close();
+		// db.close();
 	}
 
 }

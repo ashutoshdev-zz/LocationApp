@@ -8,7 +8,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.zakoopi.search.AllArea;
 
@@ -50,7 +49,7 @@ public class HomeSearchAllAreaDatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_AREA_NAME, allArea.getMarketName());
 		//values.put(KEY_PRODUCT_CATEGORY, allProduct.getProductCategory());
 		db.insert(TABLE_AREA, null, values);
-Log.e("ADD", allArea.getMarketName());
+//Log.e("ADD", allArea.getMarketName());
 		//db.close();
 	}
 
@@ -90,7 +89,7 @@ Log.e("ADD", allArea.getMarketName());
 				
 				String name=cursor.getString(cursor.getColumnIndex("area_name"));
 				arealist1.add(name);
-				Log.e("GETALL", ""+arealist1);
+			//	Log.e("GETALL", ""+arealist1);
 			} while (cursor.moveToNext());
 		}
 		return arealist1;

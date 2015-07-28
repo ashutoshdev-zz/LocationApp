@@ -30,11 +30,9 @@ import android.webkit.URLUtil;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.drive.query.internal.InFilter;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -50,7 +48,6 @@ import com.zakoopi.activity.LookbookView;
 import com.zakoopi.database.HomeFeedLikeDatabaseHandler;
 import com.zakoopi.helper.DynamicImageView;
 import com.zakoopi.helper.POJO;
-import com.zakoopi.helper.Variables;
 
 @SuppressWarnings("deprecation")
 public class PopularAdapter1 extends BaseAdapter {
@@ -73,7 +70,7 @@ public class PopularAdapter1 extends BaseAdapter {
 	
 	int mode_position;
 	String like;
-	String[] pos;
+	String[] ststus_pos;
 
 	public PopularAdapter1(Context context, List<POJO> list,
 			ArrayList<Integer> color,
@@ -83,9 +80,9 @@ public class PopularAdapter1 extends BaseAdapter {
 		this.colorlist = color;
 		this.likeDatabaseHandler = likeDatabaseHandler;
 		main_like = likeDatabaseHandler.getAllLike();
-		pos = new String[main_like.size()];
+		ststus_pos = new String[main_like.size()];
 		for (int i = 0; i < main_like.size(); i++) {
-			pos[i] = main_like.get(i);
+			ststus_pos[i] = main_like.get(i);
 		}
 		
 
@@ -203,6 +200,7 @@ public class PopularAdapter1 extends BaseAdapter {
 			}
 
 			final POJO pojo = mList.get(position);
+			holder.like_image.setTag(position);
 
 			try {
 
@@ -324,8 +322,9 @@ public class PopularAdapter1 extends BaseAdapter {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			
 			return result;
-
+			
 		case 2:
 			View article_result = convertView;
 			final ArticleHolder article_holder;
@@ -429,43 +428,6 @@ public class PopularAdapter1 extends BaseAdapter {
 				}
 
 				
-Log.e("POS", pos[position]);
-				if (pos[position].equals("true")) {
-					// likeDatabaseHandler.allDelete();
-					/*
-					 * likeDatabaseHandler.updateLike(article_pojo.getIdd(),
-					 * "false");
-					 */
-					Log.e("TRUE", pos[position]);
-					article_holder.like_image
-							.setImageResource(R.drawable.home_like_active);
-				} else {
-					// likeDatabaseHandler.allDelete();
-					/*
-					 * likeDatabaseHandler.updateLike(article_pojo.getIdd(),
-					 * "true");
-					 */
-					Log.e("FALSE", pos[position]);
-					article_holder.like_image
-							.setImageResource(R.drawable.home_like_inactive);
-				}
-				
-				
-
-				/*
-				 * if (article_pojo.getis_liked().equals("true")) {
-				 * article_color = "white";
-				 * like_image.setImageResource(R.drawable.home_like_active); //
-				 * like_image.setVisibility(View.VISIBLE); //
-				 * unlike_image.setVisibility(View.GONE); Log.e("TRUE", "TRUE");
-				 * Log.e("Image_true", "" + like_image.getResources()); } else {
-				 * article_color = "red";
-				 * like_image.setImageResource(R.drawable.home_like_inactive);
-				 * Log.e("FALSE", "FALSE"); //
-				 * like_image.setVisibility(View.GONE); //
-				 * unlike_image.setVisibility(View.VISIBLE);
-				 * Log.e("Image_false", "" + like_image.getResources()); }
-				 */
 
 				article_holder.user_name.setText(article_pojo.getUsername());
 
@@ -571,74 +533,50 @@ Log.e("POS", pos[position]);
 							}
 						});
 
+				  
+					if (article_pojo.getLikes().equals("true")) {
+						
+						Log.e("TRUE", ststus_pos[position]);
+						article_holder.like_image
+								.setImageResource(R.drawable.home_like_active);
+					} else {
+						
+						Log.e("FALSE", ststus_pos[position]);
+						article_holder.like_image
+								.setImageResource(R.drawable.home_like_inactive);
+					}
+					
+				
+					
 				article_holder.like_image
 						.setOnClickListener(new OnClickListener() {
 
 							@Override
 							public void onClick(View v) {
-
-								int like_pos = (Integer) v.getTag();
-								MyDbvar vvv = likeDatabaseHandler.likeShow();
 								
-							
-								String status = vvv.getStatus();
-								String id = vvv.getId();
-								Log.e("sssssss", status);
-								if (status.equals("true")) {
-									
-									Log.e("IFFFF", status);
+								if (article_pojo.getLikes().equals("true")) {
+									int like_pos = (Integer) v.getTag();
+									Log.e("IFFFF", article_pojo.getLikes());
 									article_holder.like_image
 											.setImageResource(R.drawable.home_like_inactive);
-									likeDatabaseHandler.updateLike(id, "false");
+									//likeDatabaseHandler.updateLike(id, "false");
 									String val = likeDatabaseHandler.getAllLike().get(like_pos);
-									pos[like_pos] = "false";
+									ststus_pos[like_pos] = "false";
+									
 
 								} else {
 									// likeDatabaseHandler.allDelete();
-									Log.e("sssssss", status);
-									
+									Log.e("ELSEEEEE", article_pojo.getLikes());
+									int like_pos = (Integer) v.getTag();
 									article_holder.like_image
 											.setImageResource(R.drawable.home_like_active);
-									likeDatabaseHandler.updateLike(id, "true");
+									//likeDatabaseHandler.updateLike(id, "true");
 									String val = likeDatabaseHandler.getAllLike().get(like_pos);
-									pos[like_pos] = "true";
+									ststus_pos[like_pos] = "true";
+									
 								}
 
-								/*
-								 * if (article_color.equals("white")) {
-								 * article_color = "red"; //Toast.makeText(ctx,
-								 * "Like", Toast.LENGTH_SHORT).show();
-								 * like_image.setImageResource(0);
-								 * like_image.setImageResource
-								 * (R.drawable.home_like_inactive);
-								 * //like_image.setVisibility(View.GONE);
-								 * //unlike_image.setVisibility(View.VISIBLE);
-								 * Log.e("article_color_if", ""+article_color);
-								 * 
-								 * 
-								 * //long count =
-								 * Long.parseLong(lookbook_like.getText
-								 * ().toString())+1;
-								 * //lookbook_like.setText(""+count); //
-								 * article_like(article_pojo.getIdd(), "1");
-								 * 
-								 * } else { article_color = "white";
-								 * like_image.setImageResource(0);
-								 * like_image.setImageResource
-								 * (R.drawable.home_like_active);
-								 * //like_image.setVisibility(View.VISIBLE);
-								 * //unlike_image.setVisibility(View.GONE);
-								 * //Toast.makeText(ctx, "UnLike",
-								 * Toast.LENGTH_SHORT).show();
-								 * Log.e("article_color_else",
-								 * ""+article_color); //long count =
-								 * Long.parseLong
-								 * (lookbook_like.getText().toString())-1;
-								 * //lookbook_like.setText(""+count); //
-								 * article_like(article_pojo.getIdd(), "0");
-								 * 
-								 * }
-								 */
+								
 							}
 						});
 
@@ -694,7 +632,7 @@ Log.e("POS", pos[position]);
 			}
 
 			final POJO review_pojo = mList.get(position);
-
+			review_holder.like_image.setTag(position);
 			try {
 
 				review_holder.user_name.setText(review_pojo.getUsername());
@@ -783,7 +721,7 @@ Log.e("POS", pos[position]);
 			}
 
 			final POJO team_pojo = mList.get(position);
-
+			team_holder.like_image.setTag(position);
 			try {
 
 				team_holder.user_name.setText(team_pojo.getUsername());
@@ -863,8 +801,8 @@ Log.e("POS", pos[position]);
 	}
 
 	public void article_like(String article_id, final String like_get) {
-		Log.e("URL", ctx.getString(R.string.base_url) + "articles/like/"
-				+ article_id + ".json");
+		/*Log.e("URL", ctx.getString(R.string.base_url) + "articles/like/"
+				+ article_id + ".json");*/
 		pro_user_pref = ctx.getSharedPreferences("User_detail", 0);
 		String user_id = pro_user_pref.getString("user_id", "0");
 
@@ -873,8 +811,8 @@ Log.e("POS", pos[position]);
 				.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
 		client.setTimeout(DEFAULT_TIMEOUT);
 		RequestParams params = new RequestParams();
-		Log.e("user_ID", user_id);
-		Log.e("TIME", String.valueOf(System.currentTimeMillis()));
+		//Log.e("user_ID", user_id);
+		//Log.e("TIME", String.valueOf(System.currentTimeMillis()));
 		params.put("user_id", user_id);
 		params.put("timestamp", String.valueOf(System.currentTimeMillis()));
 		params.put("like", like_get);
@@ -903,7 +841,7 @@ Log.e("POS", pos[position]);
 					 * = Long.parseLong(get_likes)+1;
 					 * lookbook_like.setText(""+count); }
 					 */
-					Log.e("DATA", text2);
+				//	Log.e("DATA", text2);
 				} catch (Exception e) {
 
 				}
@@ -913,7 +851,7 @@ Log.e("POS", pos[position]);
 			public void onFailure(int statusCode, Header[] headers,
 					byte[] response, Throwable e) {
 
-				Log.e("FAIL", "FAIL");
+			//	Log.e("FAIL", "FAIL");
 			}
 		});
 	}

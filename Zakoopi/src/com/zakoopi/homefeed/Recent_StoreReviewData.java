@@ -19,6 +19,9 @@ public class Recent_StoreReviewData {
 	@SerializedName("hits")
 	private String hits;
 
+	@SerializedName("is_liked")
+	private String is_liked;
+
 	Recent_StoreReview_Users user;
 	Recent_StoreReview_Store store;
 
@@ -60,6 +63,14 @@ public class Recent_StoreReviewData {
 
 	public void setHits(String hits) {
 		this.hits = hits;
+	}
+
+	public String getIs_liked() {
+		return is_liked;
+	}
+
+	public void setIs_liked(String is_liked) {
+		this.is_liked = is_liked;
 	}
 
 	public Recent_StoreReview_Users getUser() {

@@ -24,6 +24,9 @@ public class Popular_Lookbookdata {
 	@SerializedName("hits_text")
 	private String hits_text;
 
+	@SerializedName("is_liked")
+	private String is_liked;
+
 	Popular_Lookbook_User user;
 	ArrayList<Popular_Lookbook_Cards> cards;
 
@@ -73,6 +76,14 @@ public class Popular_Lookbookdata {
 
 	public void setView_count(String view_count) {
 		this.hits_text = view_count;
+	}
+
+	public String getIs_liked() {
+		return is_liked;
+	}
+
+	public void setIs_liked(String is_liked) {
+		this.is_liked = is_liked;
 	}
 
 	public Popular_Lookbook_User getUser() {

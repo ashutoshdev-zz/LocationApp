@@ -54,7 +54,7 @@ public class MainFragment extends Fragment {
 	typeface_regular;
 	View v1, v2, v3;
 	public static CustomScrollView scroll;
-	RelativeLayout rateme, reviewme;
+	RelativeLayout rateme, reviewme, rel_rate_box;
 	TextView ratecount;
 	Dialog diaog;
 
@@ -75,7 +75,7 @@ public class MainFragment extends Fragment {
 		
 		
 		LAST_UPDATE_URL = getString(R.string.base_url)+"stores/view/"+StoreActivity.store_id+".json";
-		//LAST_UPDATE_URL = getString(R.string.base_url)+"stores/view/"+339+".json";
+		//LAST_UPDATE_URL = getString(R.string.base_url)+"stores/view/"+844+".json";
 		
 		/**
 		 * Typeface
@@ -108,6 +108,7 @@ public class MainFragment extends Fragment {
 		scroll = (CustomScrollView) view.findViewById(R.id.scrollView1);
 		rateme = (RelativeLayout) view.findViewById(R.id.rel_rate1);
 		reviewme = (RelativeLayout) view.findViewById(R.id.rel_review);
+		rel_rate_box = (RelativeLayout) view.findViewById(R.id.rel_rated_box1);
 
 		v1 = (View) view.findViewById(R.id.view111);
 		v2 = (View) view.findViewById(R.id.view11);
@@ -320,12 +321,74 @@ public class MainFragment extends Fragment {
 		reader.setLenient(true);
 		stores = gson.fromJson(reader, Stores.class);
 		detail = stores.getStore();
-		//Log.e("jjjjjj",detail.getStore_name() + "::" + detail.getStore_address());
+		Log.e("jjjjjj",detail.getStore_name() + "::" + detail.getStore_address() + "::" + detail.getOverall_ratings());
 		store_name.setText(detail.getStore_name());
 		store_address.setText(detail.getStore_address() + ","
-				+ detail.getArea() + "," + detail.getMarket() + ","
-				+ detail.getCity_name() + "," + detail.getPin_code());
-		store_rate.setText(detail.getOverall_ratings());
+				+ detail.getArea() + "," + detail.getPin_code());
+		
+		int rate_avg = Integer.parseInt(detail.getOverall_ratings());
+		Log.e("RATE", ""+rate_avg);
+		if (rate_avg == 0 || rate_avg <= 0.5) {
+			Log.e("RATE__0", ""+rate_avg);
+			if (rate_avg == 0) {
+				rel_rate_box.setBackgroundResource(R.drawable.rating_box_0);
+				store_rate.setText("-");
+				Log.e("RATE__if", ""+rate_avg);
+			} else {
+				rel_rate_box.setBackgroundResource(R.drawable.rating_box_0);
+				store_rate.setText(""+rate_avg);
+				Log.e("RATE__else", ""+rate_avg);
+			}
+						
+		} else if (rate_avg == 0.6 || rate_avg <= 1) {
+			rel_rate_box.setBackgroundResource(R.drawable.rating_box_0_6);
+			store_rate.setText(""+rate_avg);
+			Log.e("RATE__else_if_0.6", ""+rate_avg);
+			
+		} else if (rate_avg == 1.1 || rate_avg <= 1.5) {
+			rel_rate_box.setBackgroundResource(R.drawable.rating_box_1_1);
+			store_rate.setText(""+rate_avg);
+			Log.e("RATE__else_if_1.1", ""+rate_avg);
+			
+		} else if (rate_avg == 1.6 || rate_avg <= 2) {
+			rel_rate_box.setBackgroundResource(R.drawable.rating_box_1_6);
+			store_rate.setText(""+rate_avg);
+			Log.e("RATE__else_if_1.6", ""+rate_avg);
+			
+		} else if (rate_avg == 2.1 || rate_avg <= 2.5) {
+			rel_rate_box.setBackgroundResource(R.drawable.rating_box_2_1);
+			store_rate.setText(""+rate_avg);
+			Log.e("RATE__else_if_2.1", ""+rate_avg);
+			
+		} else if (rate_avg == 2.6 || rate_avg <= 3) {
+			rel_rate_box.setBackgroundResource(R.drawable.rating_box_2_6);
+			store_rate.setText(""+rate_avg);
+			Log.e("RATE__else_if_2.6", ""+rate_avg);
+			
+		} else if (rate_avg == 3.1 || rate_avg <= 3.5) {
+			rel_rate_box.setBackgroundResource(R.drawable.rating_box_3_1);
+			store_rate.setText(""+rate_avg);
+			Log.e("RATE__else_if_3.1", ""+rate_avg);
+			
+		} else if (rate_avg == 3.6 || rate_avg <= 4) {
+			rel_rate_box.setBackgroundResource(R.drawable.rating_box_3_6);
+			store_rate.setText(""+rate_avg);
+			Log.e("RATE__else_if_3.6", ""+rate_avg);
+			
+		} else if (rate_avg == 4.1 || rate_avg <= 4.5) {
+			rel_rate_box.setBackgroundResource(R.drawable.rating_box_4_1);
+			store_rate.setText(""+rate_avg);
+			Log.e("RATE__else_if_4.1", ""+rate_avg);
+			
+		} else {
+			rel_rate_box.setBackgroundResource(R.drawable.rating_box_4_6);
+			store_rate.setText(""+rate_avg);
+			Log.e("RATE__else_if_4.6", ""+rate_avg);
+		}
+		
+		
+		
+		//store_rate.setText(detail.getOverall_ratings());
 		store_like.setText(detail.getLikes_count() + " Votes");
 		store_timings.setText(detail.getStore_timing_from() + " - "
 				+ detail.getStore_timing_to());

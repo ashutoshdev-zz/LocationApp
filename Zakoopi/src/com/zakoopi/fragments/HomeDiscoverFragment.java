@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -114,7 +113,7 @@ public class HomeDiscoverFragment extends Fragment {
 		 * getActivity()); home_search_area_db = new
 		 * HomeSearchAllAreaDatabaseHandler( getActivity());
 		 */
-		Log.e("onCREATE", "DISCOVER_onCreate");
+	//	Log.e("onCREATE", "DISCOVER_onCreate");
 		/**
 		 * Typeface
 		 */
@@ -560,7 +559,7 @@ public class HomeDiscoverFragment extends Fragment {
 
 						text2 = text2 + text1;
 					}
-					Log.e("AREA_CITY", text2);
+				//	Log.e("AREA_CITY", text2);
 					allArea_showData_city(text2);
 					
 				} catch (Exception e) {
@@ -592,16 +591,16 @@ public class HomeDiscoverFragment extends Fragment {
 
 		Area area1 = gson1.fromJson(jsonReader, Area.class);
 		markets = area1.getMarkets();
-		Log.e("MARKETS", ""+markets);
+		//Log.e("MARKETS", ""+markets);
 		for (int i = 0; i < markets.size(); i++) {
 			market_name = markets.get(i).get_market_name();
 			home_search_area_db.addAllArea(new AllArea(market_name));
-			 Log.e("ADDALL", ""+home_search_area_db);
+		//	 Log.e("ADDALL", ""+home_search_area_db);
 
 		}
 		Variables.areaList.clear();
 		Variables.areaList = home_search_area_db.getAllAreas1();
-		Log.e("AREA*****", ""+Variables.areaList);
+		//Log.e("AREA*****", ""+Variables.areaList);
 		AreaAdapterClass adp = new AreaAdapterClass(getActivity(), Variables.areaList);
 		search_spinner_area.setAdapter(adp);
 		// Log.e("ADDALL", ""+home_search_area_db);

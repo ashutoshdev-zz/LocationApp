@@ -23,10 +23,13 @@ public class Recent_Lookbookdata {
 
 	@SerializedName("hits_text")
 	private String hits_text;
-	
+
+	@SerializedName("is_liked")
+	private String is_liked;
+
 	@SerializedName("lookbookcomment_count")
 	private String lookbookcomment_count;
-	
+
 	Recent_Lookbook_User user;
 	ArrayList<Recent_Lookbook_Cards> cards;
 
@@ -77,12 +80,20 @@ public class Recent_Lookbookdata {
 	public void setView_count(String view_count) {
 		this.hits_text = view_count;
 	}
-	
-	public String getLookbookComment_count(){
+
+	public String getIs_liked() {
+		return is_liked;
+	}
+
+	public void setIs_liked(String is_liked) {
+		this.is_liked = is_liked;
+	}
+
+	public String getLookbookComment_count() {
 		return lookbookcomment_count;
 	}
-	
-	public void setLookbookComment_count(String lookbookcomment_count){
+
+	public void setLookbookComment_count(String lookbookcomment_count) {
 		this.lookbookcomment_count = lookbookcomment_count;
 	}
 

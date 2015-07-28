@@ -24,7 +24,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -129,7 +128,7 @@ public class MainActivity extends FragmentActivity implements
 		pro_user_location = pro_user_pref.getString("user_location", "4267");
 		user_email = pro_user_pref.getString("user_email", "9089");
 		user_password = pro_user_pref.getString("password", "sar");
-		Log.e("CLIENT", user_email + "----" + user_password);
+	//	Log.e("CLIENT", user_email + "----" + user_password);
 
 		prefs_area1 = getSharedPreferences("PREF", 1);
 		editor_market1 = prefs_area1.edit();
@@ -427,7 +426,7 @@ public class MainActivity extends FragmentActivity implements
 		LAST_UPDATE_REST_URL = getString(R.string.base_url)
 				+ "lastUpdates.json";
 
-		Log.e("update_url", LAST_UPDATE_REST_URL);
+	//	Log.e("update_url", LAST_UPDATE_REST_URL);
 		// client.setBasicAuth("a.himanshu.verma@gmail.com", "dragonvrmxt2t");
 		client.getHttpClient().getParams()
 				.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
@@ -543,7 +542,7 @@ public class MainActivity extends FragmentActivity implements
 						text2 = text2 + text1;
 					}
 					allArea_showData(text2);
-					Log.e("AREA", text2);
+				//	Log.e("AREA", text2);
 				} catch (Exception e) {
 
 				}
@@ -597,8 +596,8 @@ public class MainActivity extends FragmentActivity implements
 
 	public void MainWebservice() {
 		String MAIN_WEBSERVICE_REST_URL = "";
-		Log.e("CITY", city);
-		Log.e("MAIN", MAIN_WEBSERVICE_REST_URL);
+	//	Log.e("CITY", city);
+	//	Log.e("MAIN", MAIN_WEBSERVICE_REST_URL);
 		MAIN_WEBSERVICE_REST_URL = getString(R.string.base_url)
 				+ "start/setClientLocation/" + city + ".json";
 		// client.setBasicAuth("a.himanshu.verma@gmail.com", "dragonvrmxt2t");

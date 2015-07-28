@@ -144,7 +144,7 @@ public class SplashScreen extends Activity {
 				public void run() {
 					
 
-					Log.e("HANDLE", city_name);
+				//	Log.e("HANDLE", city_name);
 					MainWebservice();
 
 				}
@@ -370,7 +370,7 @@ public class SplashScreen extends Activity {
 						text = text + line;
 					}
 					all_update(text);
-					Log.e("RESp", text);
+					//Log.e("RESp", text);
 					
 				} catch (Exception e) {
 					
@@ -382,7 +382,7 @@ public class SplashScreen extends Activity {
 			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
 					Throwable arg3) {
 				
-Log.e("FAIL", "FAIL");
+//Log.e("FAIL", "FAIL");
 			}
 		});
 	}
@@ -405,7 +405,7 @@ Log.e("FAIL", "FAIL");
 					editor.putString("model", ser.get_model());
 					editor.putString("time", ser.get_timestamp());
 					editor.commit();
-					 Log.e("PRO", time + "--" + ser.get_timestamp());
+					// Log.e("PRO", time + "--" + ser.get_timestamp());
 					all_product();
 
 				}
@@ -430,7 +430,7 @@ Log.e("FAIL", "FAIL");
 	}
 
 	public void all_product() {
-		Log.e("pro-url", ALL_PRODUCT_REST_URL);
+		//Log.e("pro-url", ALL_PRODUCT_REST_URL);
 		//client.setBasicAuth("a.himanshu.verma@gmail.com", "dragonvrmxt2t");
 		client.getHttpClient().getParams()
 				.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
@@ -517,11 +517,11 @@ Log.e("FAIL", "FAIL");
 	 */
 
 	public void MainWebservice() {
-		Log.e("CITY", city_name);
+		//Log.e("CITY", city_name);
 		
 		MAIN_WEBSERVICE_REST_URL = getString(R.string.base_url)
 				+ "start/setClientLocation/" + city_name + ".json";
-		Log.e("MAIN", MAIN_WEBSERVICE_REST_URL);
+		//Log.e("MAIN", MAIN_WEBSERVICE_REST_URL);
 		//client.setBasicAuth("a.himanshu.verma@gmail.com", "dragonvrmxt2t");
 		client.getHttpClient().getParams()
 				.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);

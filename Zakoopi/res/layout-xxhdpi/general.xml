@@ -36,7 +36,7 @@
             android:layout_width="67.67dp"
             android:layout_height="27dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="25.33dp"
+            android:layout_marginLeft="10.33dp"
             android:layout_toRightOf="@+id/txt_catalogue"
             android:src="@drawable/general_women_active"
             android:visibility="visible" />
@@ -48,7 +48,7 @@
      android:layout_width="67.67dp"
      android:layout_height="27dp"
      android:layout_centerVertical="true"
-     android:layout_marginLeft="25.33dp"
+     android:layout_marginLeft="10.33dp"
      
      android:layout_toRightOf="@+id/imageView2"
      android:src="@drawable/general_men_inactive" />
@@ -58,7 +58,7 @@
             android:layout_width="67.67dp"
             android:layout_height="27dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="25.33dp"
+            android:layout_marginLeft="10.33dp"
             android:layout_toRightOf="@+id/imageView3"
             android:src="@drawable/general_kids_inactive"
             android:visibility="visible" />
