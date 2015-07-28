@@ -52,8 +52,8 @@ import com.zakoopi.helper.POJO;
 @SuppressWarnings("deprecation")
 public class PopularAdapter1 extends BaseAdapter {
 
+	
 	private List<POJO> mList;
-
 	Context ctx;
 	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 	private DisplayImageOptions options;
@@ -65,7 +65,7 @@ public class PopularAdapter1 extends BaseAdapter {
 	SharedPreferences pro_user_pref;
 	String article_color;
 	ArrayList<Integer> colorlist;
-	HomeFeedLikeDatabaseHandler likeDatabaseHandler;
+	
 	ArrayList<String> main_like = new ArrayList<String>();
 	
 	int mode_position;
@@ -73,12 +73,12 @@ public class PopularAdapter1 extends BaseAdapter {
 	String[] ststus_pos;
 
 	public PopularAdapter1(Context context, List<POJO> list,
-			ArrayList<Integer> color,
+			ArrayList<Integer> color, 
 			HomeFeedLikeDatabaseHandler likeDatabaseHandler) {
 		ctx = context;
 		mList = list;
 		this.colorlist = color;
-		this.likeDatabaseHandler = likeDatabaseHandler;
+		
 		main_like = likeDatabaseHandler.getAllLike();
 		ststus_pos = new String[main_like.size()];
 		for (int i = 0; i < main_like.size(); i++) {
@@ -560,7 +560,7 @@ public class PopularAdapter1 extends BaseAdapter {
 									article_holder.like_image
 											.setImageResource(R.drawable.home_like_inactive);
 									//likeDatabaseHandler.updateLike(id, "false");
-									String val = likeDatabaseHandler.getAllLike().get(like_pos);
+									
 									ststus_pos[like_pos] = "false";
 									
 
@@ -571,7 +571,7 @@ public class PopularAdapter1 extends BaseAdapter {
 									article_holder.like_image
 											.setImageResource(R.drawable.home_like_active);
 									//likeDatabaseHandler.updateLike(id, "true");
-									String val = likeDatabaseHandler.getAllLike().get(like_pos);
+									
 									ststus_pos[like_pos] = "true";
 									
 								}

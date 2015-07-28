@@ -326,7 +326,11 @@ public class MainFragment extends Fragment {
 		store_address.setText(detail.getStore_address() + ","
 				+ detail.getArea() + "," + detail.getPin_code());
 		
-		int rate_avg = Integer.parseInt(detail.getOverall_ratings());
+		String rated_color = detail.getRated_color();
+		rel_rate_box.setBackgroundResource(R.drawable.rating_box_0);
+		rel_rate_box.setBackgroundColor(Color.parseColor(rated_color));
+		store_rate.setText(detail.getOverall_ratings());
+		/*int rate_avg = Integer.parseInt(detail.getOverall_ratings());
 		Log.e("RATE", ""+rate_avg);
 		if (rate_avg == 0 || rate_avg <= 0.5) {
 			Log.e("RATE__0", ""+rate_avg);
@@ -384,7 +388,7 @@ public class MainFragment extends Fragment {
 			rel_rate_box.setBackgroundResource(R.drawable.rating_box_4_6);
 			store_rate.setText(""+rate_avg);
 			Log.e("RATE__else_if_4.6", ""+rate_avg);
-		}
+		}*/
 		
 		
 		

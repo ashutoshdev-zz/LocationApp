@@ -46,6 +46,8 @@ public class StoreDetail {
 	private String likes_count;
 	@SerializedName("is_liked")
 	private String is_liked;
+	@SerializedName("rated_color")
+	private String rated_color;
 
 	ArrayList<ArticlestoresArray> article_stores;
 	ArrayList<RelatedlookbookArrays> related_lookbooks;
@@ -253,6 +255,14 @@ public class StoreDetail {
 
 	public void setIs_liked(String is_liked) {
 		this.is_liked = is_liked;
+	}
+	
+	public String getRated_color() {
+		return rated_color;
+	}
+
+	public void setRated_color(String rated_color) {
+		this.rated_color = rated_color;
 	}
 
 }
