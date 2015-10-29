@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffffff" >
+
+    <EditText
+        android:id="@+id/edt_search_store"
+        android:layout_width="wrap_content"
+        android:layout_height="40.0dip"
+        android:layout_below="@+id/main_tool"
+        android:layout_margin="10.0dip"
+        android:background="@drawable/storename_box"
+        android:ems="10"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:hint="Start typing the store name"
+        android:padding="5.0dip"
+        android:singleLine="true"
+        android:textColor="#ff4d4d49"
+        android:textSize="13.0dip" >
+
+        <requestFocus />
+    </EditText>
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/edt_search_store"
+        android:fadingEdge="none"
+        android:scrollbars="none" />
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/edt_search_store"
+        android:layout_alignRight="@+id/edt_search_store"
+        android:layout_alignTop="@+id/edt_search_store"
+        android:layout_marginRight="10.0dip"
+        android:visibility="gone" />
+
+</RelativeLayout>
