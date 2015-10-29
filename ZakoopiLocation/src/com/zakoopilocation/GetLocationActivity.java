@@ -1,9 +1,5 @@
 package com.zakoopilocation;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.InputStreamReader;
-
 import org.apache.http.Header;
 import org.apache.http.client.params.ClientPNames;
 
@@ -21,7 +17,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -155,7 +150,7 @@ public class GetLocationActivity extends FragmentActivity implements
 					byte[] errorResponse, Throwable e) {
 
 				mProgressHUD.dismiss();
-				Log.e("fali", statusCode + "");
+				
 			}
 
 			@Override

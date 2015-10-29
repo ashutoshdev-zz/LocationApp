@@ -25,7 +25,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -37,10 +36,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.loopj.android.http.AsyncHttpClient;
@@ -91,6 +86,7 @@ public class MainActivity extends Activity {
 		countDownTimer = new MyCountDownTimer(startTime, interval);
 		
 
+		LogDebug.showMessage("here", "here");
 		try {
 
 			Intent i = getIntent();
@@ -117,47 +113,14 @@ public class MainActivity extends Activity {
 		
 		lv = (ListView) findViewById(R.id.listView1);
 
-		/**
-		 * Typeface
-		 *//*
-		typeface_semibold = Typeface.createFromAsset(getAssets(),
-				"fonts/SourceSansPro-Semibold.ttf");
-		typeface_black = Typeface.createFromAsset(getAssets(),
-				"fonts/SourceSansPro-Black.ttf");
-		typeface_bold = Typeface.createFromAsset(getAssets(),
-				"fonts/SourceSansPro-Bold.ttf");
-		typeface_light = Typeface.createFromAsset(getAssets(),
-				"fonts/SourceSansPro-Light.ttf");
-		typeface_regular = Typeface.createFromAsset(getAssets(),
-				"fonts/SourceSansPro-Regular.ttf");
-
-		try {
-			edt_search_store.setTypeface(typeface_regular);
-			txt_back.setTypeface(typeface_semibold);
-			txt_back.setText("Search Store");
-			txt_net.setTypeface(typeface_regular);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}*/
-
-		/*rel_back.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				finish();
-
-			}
-		});
-*/
+		
 		lv.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 
-				
+				LogDebug.showMessage("store name", storeDetail.get(arg2).getStorename());
 				Intent inn = new Intent(MainActivity.this,GetLocationActivity.class);
 				inn.putExtra("sid", storeDetail.get(arg2).getId());
 				inn.putExtra("sname", storeDetail.get(arg2).getStorename());
@@ -228,29 +191,7 @@ public class MainActivity extends Activity {
 		});
 	}
 
-	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-		GoogleAnalytics.getInstance(MainActivity.this)
-				.reportActivityStart(this);
-	}
-
-	@Override
-	protected void onStop() {
-		// TODO Auto-generated method stub
-		super.onStop();
-		GoogleAnalytics.getInstance(MainActivity.this)
-				.reportActivityStop(this);
-	}
-
-	/**
-	 * MyApp extends AsyncTask<List<searchdatabydatabase>, Void, Void> for
-	 * Showdata(data)
-	 * 
-	 * @author ZakoopiUser
-	 *
-	 */
+	
 	private class MyApp11 extends AsyncTask<ArrayList<SearchPojo>, Void, Void> {
 
 		@Override
